@@ -65,9 +65,12 @@ grep -q 'og/a-second-note.png' "$second"
 if grep -q 'class="hero"' "$second"; then
   fail "text post rendered a hero"
 fi
-grep -q 'og/an-open-picture.png' "$open_picture"
-if grep -q 'class="hero"' "$open_picture"; then
-  fail "open picture rendered a hero with no file"
+grep -q 'class="hero"' "$open_picture"
+grep -q 'Generated image' "$open_picture"
+grep -q 'alt="A quiet writing desk by a window, morning light, an empty chair, paper and a cup"' "$open_picture"
+grep -q 'processed_images/hero.' "$open_picture"
+if grep -q 'og/an-open-picture.png' "$open_picture"; then
+  fail "open picture used a title card over its picture"
 fi
 grep -q 'An open picture' "$hero"
 if grep -q 'class="toc"' "$second"; then
