@@ -12,9 +12,9 @@
 {% set hero_src = hero_src_raw | trim %}
 {% if hero_src %}
   {% set hero_path = page.path ~ hero_src %}
-  {% set hero_1200 = resize_image(path=hero_path, width=1200, op="fit_width", format="jpg", quality=80) %}
-  {% set hero_1800 = resize_image(path=hero_path, width=1800, op="fit_width", format="jpg", quality=80) %}
-  {% set hero_2400 = resize_image(path=hero_path, width=2400, op="fit_width", format="jpg", quality=80) %}
+  {% set hero_1200 = resize_image(path=hero_path, width=1200, op="fit_width", format="webp", quality=80) %}
+  {% set hero_1800 = resize_image(path=hero_path, width=1800, op="fit_width", format="webp", quality=80) %}
+  {% set hero_2400 = resize_image(path=hero_path, width=2400, op="fit_width", format="webp", quality=80) %}
   {% set lqip = lqips[page.relative_path] %}
   <header class="hero">
     {% if lqip %}
