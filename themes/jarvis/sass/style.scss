@@ -507,6 +507,49 @@ body:has(header.hero):not(.is-scrolled) .progress > span {
   z-index: 1;
 }
 
+.hero-blur {
+  position: absolute;
+  z-index: 2;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: var(--hero-fade-height);
+  pointer-events: none;
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgb(0 0 0 / 0.04) 12.5%,
+    rgb(0 0 0 / 0.16) 25%,
+    rgb(0 0 0 / 0.32) 37.5%,
+    rgb(0 0 0 / 0.5) 50%,
+    rgb(0 0 0 / 0.68) 62.5%,
+    rgb(0 0 0 / 0.84) 75%,
+    rgb(0 0 0 / 0.96) 87.5%,
+    #000 100%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgb(0 0 0 / 0.04) 12.5%,
+    rgb(0 0 0 / 0.16) 25%,
+    rgb(0 0 0 / 0.32) 37.5%,
+    rgb(0 0 0 / 0.5) 50%,
+    rgb(0 0 0 / 0.68) 62.5%,
+    rgb(0 0 0 / 0.84) 75%,
+    rgb(0 0 0 / 0.96) 87.5%,
+    #000 100%
+  );
+}
+
+@media (max-width: 640px) {
+  .hero-blur {
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+  }
+}
+
 .hero-fade {
   position: absolute;
   z-index: 2;

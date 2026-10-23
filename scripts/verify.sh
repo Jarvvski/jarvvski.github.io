@@ -40,6 +40,11 @@ home="$public/index.html"
 search="$public/search/index.html"
 
 grep -q 'class="hero"' "$hero"
+grep -q 'class="hero-blur"' "$hero"
+grep -q 'class="hero-blur"' "$open_picture"
+if grep -q 'class="hero-blur"' "$second"; then
+  fail "text post blurred a hero"
+fi
 grep -q 'data:image/webp;base64,' "$hero"
 grep -q 'data:image/webp;base64,' "$open_picture"
 if grep -q 'data:image/webp;base64,' "$second"; then
