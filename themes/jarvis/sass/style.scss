@@ -387,23 +387,8 @@ body:has(header.hero):not(.is-scrolled) .progress > span {
   right: 0;
   bottom: 0;
   height: 35%;
-  background: linear-gradient(to bottom, transparent, var(--bg));
+  background: linear-gradient(to bottom, #{"rgb(from var(--bg) r g b / 0%)"}, var(--bg));
   pointer-events: none;
-}
-
-.hero-shade {
-  position: absolute;
-  z-index: 2;
-  inset: 0;
-  pointer-events: none;
-  background: linear-gradient(
-    to top,
-    transparent 0%,
-    rgba(0, 0, 0, 0.78) 9%,
-    rgba(0, 0, 0, 0.66) 24%,
-    rgba(0, 0, 0, 0.28) 48%,
-    rgba(0, 0, 0, 0.24) 100%
-  );
 }
 
 .hero-text {

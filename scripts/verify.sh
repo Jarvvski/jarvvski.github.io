@@ -47,6 +47,9 @@ grep -q 'class="hero-fade"' "$open_picture"
 if grep -q 'hero-blur' "$hero" || grep -q 'hero-blur' "$open_picture" || grep -q 'hero-blur' "$public/style.css"; then
   fail "hero blur remains"
 fi
+if grep -q 'hero-shade' "$hero" || grep -q 'hero-shade' "$public/style.css"; then
+  fail "hero shade remains"
+fi
 grep -q 'data:image/webp;base64,' "$hero"
 grep -q 'data:image/webp;base64,' "$open_picture"
 if grep -q 'data:image/webp;base64,' "$second"; then
