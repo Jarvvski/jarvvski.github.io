@@ -1,0 +1,4 @@
+name = "jarvis"
+description = "A reading theme for jarvis.gg"
+license = "MIT"
+min_version = "0.23.0"

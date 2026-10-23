@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ get_url(path='pagefind/pagefind-ui.css', trailing_slash=false) }}">
+{% endblock %}
+
+{% block main_attrs %}data-pagefind-ignore="all"{% endblock %}
+
+{% block content %}
+<div class="column search-page">
+  <h1>Search</h1>
+  <div id="search"></div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ get_url(path='pagefind/pagefind-ui.js', trailing_slash=false) }}"></script>
+<script>
+  window.addEventListener("DOMContentLoaded", function () {
+    if (!window.PagefindUI) return;
+    var search = new PagefindUI({
+      element: "#search",
+      showSubResults: true,
+      showImages: false
+    });
+    var query = new URLSearchParams(window.location.search).get("q");
+    if (query) search.triggerSearch(query);
+  });
+</script>
+{% endblock %}

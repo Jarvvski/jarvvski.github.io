@@ -1,0 +1,100 @@
+{% if page is defined %}
+  {% set_global seo_title = page.title ~ " · " ~ config.title %}
+{% elif term is defined %}
+  {% set_global seo_title = term.name ~ " · " ~ config.title %}
+{% elif taxonomy is defined %}
+  {% set_global seo_title = taxonomy.name ~ " · " ~ config.title %}
+{% elif section is defined and (current_path or "") != "/" %}
+  {% set_global seo_title = section.title ~ " · " ~ config.title %}
+{% else %}
+  {% set_global seo_title = config.title %}
+{% endif %}
+
+{% if page is defined and page?.description %}
+  {% set_global seo_description = page.description %}
+{% elif term is defined %}
+  {% set_global seo_description = "Notes tagged " ~ term.name ~ "." %}
+{% else %}
+  {% set_global seo_description = config.description %}
+{% endif %}
+
+<title>{{ seo_title }}</title>
+<meta name="description" content="{{ seo_description }}">
+{% set canonical = current_url or config.base_url %}
+<link rel="canonical" href="{{ canonical }}">
+<meta property="og:site_name" content="{{ config.title }}">
+<meta property="og:locale" content="en_US">
+<meta property="og:title" content="{{ seo_title }}">
+<meta property="og:description" content="{{ seo_description }}">
+<meta property="og:url" content="{{ canonical }}">
+{% if page is defined and page?.date %}
+  <meta property="og:type" content="article">
+{% else %}
+  <meta property="og:type" content="website">
+{% endif %}
+
+{% if page is defined and page.extra?.hero %}
+  {% set og_hero = resize_image(path=page.path ~ page.extra.hero, width=1200, height=630, op="fill", format="jpg", quality=80) %}
+  <meta property="og:image" content="{{ og_hero.url }}">
+  <meta property="og:image:width" content="{{ og_hero.width }}">
+  <meta property="og:image:height" content="{{ og_hero.height }}">
+  <meta name="twitter:image" content="{{ og_hero.url }}">
+  {% set_global seo_image = og_hero.url %}
+{% elif page is defined %}
+  {% set page_image = get_url(path="og/" ~ page.slug ~ ".png", trailing_slash=false) %}
+  <meta property="og:image" content="{{ page_image }}">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:image" content="{{ page_image }}">
+  {% set_global seo_image = page_image %}
+{% else %}
+  {% set default_image = get_url(path="og/default.png", trailing_slash=false) %}
+  <meta property="og:image" content="{{ default_image }}">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:image" content="{{ default_image }}">
+  {% set_global seo_image = default_image %}
+{% endif %}
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ seo_title }}">
+<meta name="twitter:description" content="{{ seo_description }}">
+
+{% if page is defined and page?.date %}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": {{ page.title | json_encode | safe }},
+    "description": {{ seo_description | json_encode | safe }},
+    "datePublished": "{{ page.date | date(format='%Y-%m-%d') }}",
+    "dateModified": "{{ (page?.updated or page.date) | date(format='%Y-%m-%d') }}",
+    "author": {
+      "@type": "Person",
+      "name": {{ config.extra.author | json_encode | safe }},
+      "url": {{ config.base_url | json_encode | safe }},
+      "sameAs": [
+        {{ config.extra.github | json_encode | safe }},
+        {{ config.extra.x | json_encode | safe }}
+      ]
+    },
+    "mainEntityOfPage": {{ page.permalink | json_encode | safe }},
+    "image": {{ seo_image | json_encode | safe }}
+  }
+  </script>
+{% endif %}
+
+{% if (current_path or "") == "/" or (page is defined and page.slug == "about") %}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": {{ config.extra.author | json_encode | safe }},
+    "url": {{ config.base_url | json_encode | safe }},
+    "sameAs": [
+      {{ config.extra.github | json_encode | safe }},
+      {{ config.extra.x | json_encode | safe }}
+    ]
+  }
+  </script>
+{% endif %}

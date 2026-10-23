@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+<article class="column prose" data-pagefind-body>
+  {% if page.extra?.photo %}
+    {% set photo = resize_image(path=page.path ~ page.extra.photo, width=960, op="fit_width", format="jpg", quality=82) %}
+    <img class="portrait" src="{{ photo.url }}" alt="{{ page.extra?.photo_alt or '' }}" width="{{ photo.width }}" height="{{ photo.height }}">
+  {% endif %}
+  <h1>{{ page.title }}</h1>
+  {{ page.content | safe }}
+  <ul class="about-links">
+    <li><a href="{{ config.extra.github }}">GitHub</a></li>
+    <li><a href="{{ config.extra.x }}">X</a></li>
+  </ul>
+</article>
+{% endblock %}

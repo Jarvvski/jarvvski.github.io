@@ -1,0 +1,44 @@
+base_url = "https://jarvis.gg"
+title = "Adam Jarvis"
+description = "Notes and writing by Adam Jarvis."
+author = "Adam Jarvis"
+default_language = "en"
+theme = "jarvis"
+compile_sass = true
+generate_feeds = true
+feed_filenames = ["atom.xml", "rss.xml"]
+generate_sitemap = true
+generate_robots_txt = true
+build_search_index = false
+taxonomies = [{ name = "tags" }]
+
+[markdown]
+bottom_footnotes = true
+insert_anchor_links = "right"
+external_links_target_blank = false
+external_links_no_follow = false
+external_links_no_referrer = false
+external_links_external = false
+smart_punctuation = false
+lazy_async_image = false
+
+[markdown.highlighting]
+style = "class"
+light_theme = "Tokyo Night Light"
+dark_theme = "Tokyo Night"
+extra_themes = [
+  "themes/jarvis/highlighting/tokyo-night-light.json",
+  "themes/jarvis/highlighting/tokyo-night.json",
+]
+error_on_missing_language = false
+add_color_scheme = false
+
+[link_checker]
+internal_level = "error"
+external_level = "error"
+
+[extra]
+author = "Adam Jarvis"
+github = "https://github.com/Jarvvski"
+x = "https://x.com/__adamjarvis"
+cloudflare_analytics_token = ""
