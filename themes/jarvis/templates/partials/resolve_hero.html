@@ -1,0 +1,12 @@
+{% if page is defined %}
+  {% if page.extra?.hero == false %}
+  {% elif page.extra?.hero %}
+{{ page.extra.hero }}
+  {% else %}
+    {% for asset in page.assets %}
+      {% if asset is containing(pat="hero.webp") %}
+hero.webp
+      {% endif %}
+    {% endfor %}
+  {% endif %}
+{% endif %}

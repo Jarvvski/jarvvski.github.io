@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+
+{% block progress %}
+<div class="progress" aria-hidden="true"><span></span></div>
+{% endblock %}
+
+{% block main_attrs %}data-pagefind-body{% endblock %}
+
+{% block content %}
+{% set hero_src_raw %}{% include "partials/resolve_hero.html" %}{% endset %}
+{% set hero_src = hero_src_raw | trim %}
+{% if hero_src %}
+  {% set hero_path = page.path ~ hero_src %}
+  {% set hero_1200 = resize_image(path=hero_path, width=1200, op="fit_width", format="jpg", quality=80) %}
+  {% set hero_1800 = resize_image(path=hero_path, width=1800, op="fit_width", format="jpg", quality=80) %}
+  {% set hero_2400 = resize_image(path=hero_path, width=2400, op="fit_width", format="jpg", quality=80) %}
+  <header class="hero">
+    <img
+      src="{{ hero_1800.url }}"
+      srcset="{{ hero_1200.url }} 1200w, {{ hero_1800.url }} 1800w, {{ hero_2400.url }} 2400w"
+      sizes="100vw"
+      alt="{{ page.extra?.hero_alt or '' }}"
+      width="{{ hero_1800.width }}"
+      height="{{ hero_1800.height }}"
+      fetchpriority="high"
+    >
+    <div class="hero-shade"></div>
+    <div class="hero-text">
+      {% include "partials/meta.html" %}
+      <h1>{{ page.title }}</h1>
+      {% if page?.description %}
+        <p class="deck">{{ page.description }}</p>
+      {% endif %}
+      {% if page.extra?.hero_credit or page.extra?.hero_generated %}
+        <p class="hero-credit">
+          {% if page.extra?.hero_credit %}
+            {% if page.extra?.hero_credit_url %}
+              <a href="{{ page.extra.hero_credit_url }}">{{ page.extra.hero_credit }}</a>
+            {% else %}
+              {{ page.extra.hero_credit }}
+            {% endif %}
+          {% endif %}
+          {% if page.extra?.hero_generated %}
+            <span>Generated image</span>
+          {% endif %}
+        </p>
+      {% endif %}
+    </div>
+  </header>
+{% endif %}
+
+<article class="column prose">
+  {% if not hero_src %}
+    {% include "partials/meta.html" %}
+    <h1>{{ page.title }}</h1>
+    {% if page?.description %}
+      <p class="deck">{{ page.description }}</p>
+    {% endif %}
+  {% endif %}
+
+  {% if page.extra?.series %}
+    {% set notes = get_section(path="posts/_index.md") %}
+    <nav class="series" aria-label="{{ page.extra.series }}">
+      <p>{{ page.extra.series }}</p>
+      <ol>
+        {% for item in notes.pages[::-1] %}
+          {% if item.extra?.series == page.extra.series %}
+            <li>
+              {% if item.permalink == page.permalink %}
+                <span aria-current="page">{{ item.title }}</span>
+              {% else %}
+                <a href="{{ item.permalink }}">{{ item.title }}</a>
+              {% endif %}
+            </li>
+          {% endif %}
+        {% endfor %}
+      </ol>
+    </nav>
+  {% endif %}
+
+  {% if page.extra?.toc and page.toc %}
+    <nav class="toc" aria-label="Contents">
+      <p>Contents</p>
+      {{ <toc_list items={page.toc} /> }}
+    </nav>
+  {% endif %}
+
+  {{ page.content | safe }}
+</article>
+{% endblock %}
+
+{% block scripts %}
+{% if page.content is containing(pat='data-lang="mermaid"') %}
+  <script type="module" src="{{ get_url(path='js/mermaid.js', trailing_slash=false) }}"></script>
+{% endif %}
+{% endblock %}

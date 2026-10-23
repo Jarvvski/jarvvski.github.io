@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="column home" data-pagefind-body>
+  <h1>{{ config.title }}</h1>
+  <div class="lede">{{ section.content | safe }}</div>
+  {% set notes = get_section(path="posts/_index.md") %}
+  {% if notes.pages %}
+    <ol class="post-list">
+      {% for post in notes.pages %}
+        {{ <post_item page={post} /> }}
+      {% endfor %}
+    </ol>
+  {% else %}
+    <p>No notes yet.</p>
+  {% endif %}
+</div>
+{% endblock %}

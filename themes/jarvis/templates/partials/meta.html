@@ -1,0 +1,16 @@
+<p class="meta">
+  <time datetime="{{ page.date | date(format='%Y-%m-%d') }}">{{ page.date | date(format="%B %-d, %Y") }}</time>
+  <span aria-hidden="true">·</span>
+  <span>{{ page.reading_time }} min read</span>
+  {% if page?.updated %}
+    <span aria-hidden="true">·</span>
+    <span>Updated <time datetime="{{ page.updated | date(format='%Y-%m-%d') }}">{{ page.updated | date(format="%B %-d, %Y") }}</time></span>
+  {% endif %}
+</p>
+{% if page.taxonomies?.tags %}
+  <ul class="tags">
+    {% for tag in page.taxonomies.tags %}
+      <li><a href="{{ get_taxonomy_url(kind='tags', term=tag) }}">{{ tag }}</a></li>
+    {% endfor %}
+  </ul>
+{% endif %}
