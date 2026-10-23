@@ -35,28 +35,6 @@
 }
 
 :root {
-  color-scheme: light;
-  --bg: #faf8f5;
-  --text: #222222;
-  --muted: #5c5c5c;
-  --line: #e6e6e6;
-  --soft: #f4f4f4;
-  --code-bg: #e6e7ed;
-  --code-fg: #363c4d;
-  --header-bg: rgba(250, 248, 245, 0.92);
-  --column: 42.5rem;
-  --header-h: 4rem;
-  --pagefind-ui-primary: #222222;
-  --pagefind-ui-text: #222222;
-  --pagefind-ui-background: #faf8f5;
-  --pagefind-ui-border: #e6e6e6;
-  --pagefind-ui-tag: #f4f4f4;
-  --pagefind-ui-border-width: 1px;
-  --pagefind-ui-border-radius: 8px;
-  --pagefind-ui-font: Inter, system-ui, sans-serif;
-}
-
-:root[data-theme="dark"] {
   color-scheme: dark;
   --bg: #191919;
   --text: #e8e8e8;
@@ -66,30 +44,16 @@
   --code-bg: #1a1b26;
   --code-fg: #a9b1d6;
   --header-bg: rgba(25, 25, 25, 0.92);
+  --column: 42.5rem;
+  --header-h: 4rem;
   --pagefind-ui-primary: #e8e8e8;
   --pagefind-ui-text: #e8e8e8;
   --pagefind-ui-background: #191919;
   --pagefind-ui-border: #2e2e2e;
   --pagefind-ui-tag: #242424;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme]) {
-    color-scheme: dark;
-    --bg: #191919;
-    --text: #e8e8e8;
-    --muted: #b0b0b0;
-    --line: #2e2e2e;
-    --soft: #242424;
-    --code-bg: #1a1b26;
-    --code-fg: #a9b1d6;
-    --header-bg: rgba(25, 25, 25, 0.92);
-    --pagefind-ui-primary: #e8e8e8;
-    --pagefind-ui-text: #e8e8e8;
-    --pagefind-ui-background: #191919;
-    --pagefind-ui-border: #2e2e2e;
-    --pagefind-ui-tag: #242424;
-  }
+  --pagefind-ui-border-width: 1px;
+  --pagefind-ui-border-radius: 8px;
+  --pagefind-ui-font: Inter, system-ui, sans-serif;
 }
 
 *,
@@ -152,11 +116,6 @@ a {
 }
 
 ::selection {
-  background: #d5def5;
-  color: #1a1b26;
-}
-
-:root[data-theme="dark"] ::selection {
   background: #3d4f7c;
   color: #f4f1ea;
 }
@@ -230,43 +189,6 @@ a {
   background-size: 100% 1px;
 }
 
-.theme-toggle {
-  width: 2.25rem;
-  height: 2.25rem;
-  display: grid;
-  place-items: center;
-  padding: 0;
-  border-radius: 999px;
-  border: 1px solid var(--line);
-  background: transparent;
-  color: inherit;
-  cursor: pointer;
-}
-
-.theme-toggle svg {
-  width: 1.1rem;
-  height: 1.1rem;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 1.7;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-.icon-moon {
-  display: none;
-}
-
-:root[data-theme="dark"] .icon-sun {
-  display: none;
-}
-
-:root[data-theme="dark"] .icon-moon {
-  display: block;
-  fill: currentColor;
-  stroke: none;
-}
-
 body:has(header.hero) .site-header {
   position: fixed;
   inset: 0 0 auto 0;
@@ -276,20 +198,12 @@ body:has(header.hero) .site-header {
   color: #fff;
 }
 
-body:has(header.hero) .site-header .theme-toggle {
-  border-color: rgba(255, 255, 255, 0.45);
-}
-
 body:has(header.hero) .site-header.is-solid {
   background: var(--header-bg);
   border-bottom-width: 1px;
   border-bottom-color: var(--line);
   backdrop-filter: blur(12px);
   color: var(--text);
-}
-
-body:has(header.hero) .site-header.is-solid .theme-toggle {
-  border-color: var(--line);
 }
 
 .progress {
@@ -435,7 +349,15 @@ body:has(header.hero):not(.is-scrolled) .progress > span {
   color: var(--muted);
 }
 
-@mixin hero-fade-short {
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: flex-end;
+  color: #fff;
+  margin-bottom: 2.5rem;
+  background: var(--bg);
+  overflow: hidden;
   --hero-fade-height: 35%;
   --hero-mask: linear-gradient(
     to bottom,
@@ -450,41 +372,6 @@ body:has(header.hero):not(.is-scrolled) .progress > span {
     rgb(0 0 0 / 0.04) 95.6%,
     transparent 100%
   );
-}
-
-.hero {
-  position: relative;
-  min-height: 100vh;
-  display: flex;
-  align-items: flex-end;
-  color: #fff;
-  margin-bottom: 2.5rem;
-  background: var(--bg);
-  overflow: hidden;
-  --hero-fade-height: 55%;
-  --hero-mask: linear-gradient(
-    to bottom,
-    #000 0%,
-    #000 45%,
-    rgb(0 0 0 / 0.96) 51.9%,
-    rgb(0 0 0 / 0.84) 58.8%,
-    rgb(0 0 0 / 0.68) 65.6%,
-    rgb(0 0 0 / 0.5) 72.5%,
-    rgb(0 0 0 / 0.32) 79.4%,
-    rgb(0 0 0 / 0.16) 86.3%,
-    rgb(0 0 0 / 0.04) 93.1%,
-    transparent 100%
-  );
-}
-
-:root[data-theme="dark"] .hero {
-  @include hero-fade-short;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme]) .hero {
-    @include hero-fade-short;
-  }
 }
 
 .hero img {

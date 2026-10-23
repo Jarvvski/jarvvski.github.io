@@ -17,8 +17,10 @@ test -f "$public/robots.txt"
 test -f "$public/atom.xml"
 test -f "$public/rss.xml"
 test -f "$public/CNAME"
-test -f "$public/giallo-light.css"
-test -f "$public/giallo-dark.css"
+test -f "$public/giallo.css"
+if test -f "$public/giallo-light.css" || test -f "$public/giallo-dark.css"; then
+  fail "syntax highlighting still ships a light or dual theme"
+fi
 test -f "$public/style.css"
 test -f "$public/og/default.png"
 test -f "$public/og/a-second-note.png"
@@ -78,10 +80,20 @@ grep -q 'twitter:card' "$hero"
 grep -q 'application/ld+json' "$hero"
 grep -q '"@type": "Article"' "$hero" || grep -q '"@type":"Article"' "$hero"
 grep -q 'js/mermaid.js' "$hero"
-grep -q 'localStorage.getItem("theme")' "$hero"
-grep -q 'id="theme-toggle"' "$hero"
-grep -q 'id="hl-light"' "$hero"
-grep -q 'id="hl-dark"' "$hero"
+grep -q 'giallo.css' "$hero"
+grep -q 'name="color-scheme" content="dark"' "$hero"
+if grep -q 'theme-toggle\|giallo-light\|localStorage\|prefers-color-scheme' "$hero"; then
+  fail "light theme switch remains in the page"
+fi
+if grep -q 'prefers-color-scheme' "$public/style.css"; then
+  fail "stylesheet still switches on color scheme"
+fi
+if grep -q 'lightVars' "$public/js/mermaid.js"; then
+  fail "mermaid still has a light theme"
+fi
+if grep -q 'setItem("theme"\|getItem("theme"' "$public/js/site.js"; then
+  fail "site script still stores a theme"
+fi
 
 grep -q 'Updated' "$second"
 grep -q 'a-place-for-notes' "$second"
