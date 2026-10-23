@@ -40,14 +40,16 @@
   }
 
   var header = document.querySelector(".site-header");
-  if (header && document.body.classList.contains("has-hero")) {
+  var hero = document.querySelector("header.hero");
+  if (header && hero && document.body.classList.contains("has-hero")) {
     var onHeroScroll = function () {
-      var solid = window.scrollY > 32;
-      header.classList.toggle("is-solid", solid);
-      document.body.classList.toggle("is-scrolled", solid);
+      var past = hero.getBoundingClientRect().bottom <= header.offsetHeight;
+      header.classList.toggle("is-solid", past);
+      document.body.classList.toggle("is-scrolled", past);
     };
     onHeroScroll();
     window.addEventListener("scroll", onHeroScroll, { passive: true });
+    window.addEventListener("resize", onHeroScroll);
   }
 
   var bar = document.querySelector(".progress > span");

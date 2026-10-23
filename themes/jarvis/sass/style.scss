@@ -271,7 +271,8 @@ body.has-hero .site-header {
   position: fixed;
   inset: 0 0 auto 0;
   background: linear-gradient(to bottom, rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0));
-  border-bottom-color: transparent;
+  border-bottom-width: 0;
+  backdrop-filter: none;
   color: #fff;
 }
 
@@ -281,7 +282,9 @@ body.has-hero .site-header .theme-toggle {
 
 body.has-hero .site-header.is-solid {
   background: var(--header-bg);
+  border-bottom-width: 1px;
   border-bottom-color: var(--line);
+  backdrop-filter: blur(12px);
   color: var(--text);
 }
 
