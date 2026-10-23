@@ -7,6 +7,7 @@
 {% block main_attrs %}data-pagefind-body{% endblock %}
 
 {% block content %}
+{% set lqips = load_data(path="data/hero_placeholders.json") %}
 {% set hero_src_raw %}{% include "partials/resolve_hero.html" %}{% endset %}
 {% set hero_src = hero_src_raw | trim %}
 {% if hero_src %}
@@ -14,8 +15,13 @@
   {% set hero_1200 = resize_image(path=hero_path, width=1200, op="fit_width", format="jpg", quality=80) %}
   {% set hero_1800 = resize_image(path=hero_path, width=1800, op="fit_width", format="jpg", quality=80) %}
   {% set hero_2400 = resize_image(path=hero_path, width=2400, op="fit_width", format="jpg", quality=80) %}
+  {% set lqip = lqips[page.relative_path] %}
   <header class="hero">
+    {% if lqip %}
+      <img class="hero-lqip" src="{{ lqip }}" alt="" aria-hidden="true">
+    {% endif %}
     <img
+      class="hero-photo"
       src="{{ hero_1800.url }}"
       srcset="{{ hero_1200.url }} 1200w, {{ hero_1800.url }} 1800w, {{ hero_2400.url }} 2400w"
       sizes="100vw"

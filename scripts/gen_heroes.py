@@ -8,13 +8,14 @@ import urllib.error
 import urllib.request
 from pathlib import Path
 
-from PIL import Image
+from PIL import Image, ImageFilter
 
 DEFAULT_MODEL = "@cf/black-forest-labs/flux-2-klein-9b"
 GENERATED_NAME = "hero.webp"
 DEFAULT_WIDTH = 1920
 DEFAULT_HEIGHT = 1080
 MAX_EDGE = 2400
+LQIP_EDGE = 24
 HOUSE = (
     "A wide editorial photograph with natural light and a quiet palette. "
     "No text, no letters, no logos, no watermark, no real people, and no faces. "
@@ -225,6 +226,46 @@ def save_webp(raw: bytes, dest: Path) -> None:
     os.replace(temporary, dest)
 
 
+def hero_source(extra: dict, folder: Path) -> Path | None:
+    kind = classify(extra, folder)
+    if kind == "manual":
+        path = folder / str(extra.get("hero")).strip()
+        return path if path.is_file() else None
+    if kind == "generated":
+        path = folder / GENERATED_NAME
+        return path if path.is_file() else None
+    return None
+
+
+def lqip_data_uri(path: Path) -> str:
+    image = Image.open(path)
+    image.load()
+    image = image.convert("RGB")
+    image.thumbnail((LQIP_EDGE, LQIP_EDGE), Image.Resampling.LANCZOS)
+    image = image.filter(ImageFilter.GaussianBlur(radius=1))
+    buffer = io.BytesIO()
+    image.save(buffer, "WEBP", quality=35, method=6)
+    encoded = base64.b64encode(buffer.getvalue()).decode()
+    return f"data:image/webp;base64,{encoded}"
+
+
+def write_placeholders(root: Path) -> Path:
+    found = {}
+    for path, data in posts(root):
+        if data.get("draft") is True:
+            continue
+        source = hero_source(data.get("extra") or {}, path.parent)
+        if source is None:
+            continue
+        found[path.relative_to(root / "content").as_posix()] = lqip_data_uri(source)
+    dest = root / "data" / "hero_placeholders.json"
+    dest.parent.mkdir(parents=True, exist_ok=True)
+    payload = json.dumps(found, indent=2, sort_keys=True) + "\n"
+    if not dest.is_file() or dest.read_text() != payload:
+        dest.write_text(payload)
+    return dest
+
+
 def default_fetch(url: str, body: bytes, headers: dict) -> tuple[int, str, bytes]:
     request = urllib.request.Request(url, data=body, headers=headers, method="POST")
     try:
@@ -278,11 +319,14 @@ def generate(root: Path, env: dict, fetch) -> int:
 
 def main(root: Path | None = None, env: dict | None = None, fetch=None) -> int:
     try:
-        return generate(
-            root or Path(__file__).resolve().parents[1],
+        site = root or Path(__file__).resolve().parents[1]
+        code = generate(
+            site,
             env if env is not None else dict(os.environ),
             fetch or default_fetch,
         )
+        write_placeholders(site)
+        return code
     except HeroError as error:
         print(f"Hero generation failed. {error}")
         return 1

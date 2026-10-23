@@ -40,6 +40,11 @@ home="$public/index.html"
 search="$public/search/index.html"
 
 grep -q 'class="hero"' "$hero"
+grep -q 'data:image/webp;base64,' "$hero"
+grep -q 'data:image/webp;base64,' "$open_picture"
+if grep -q 'data:image/webp;base64,' "$second"; then
+  fail "text post inlined a hero preview"
+fi
 grep -q 'srcset=' "$hero"
 grep -q 'data-lang="rust"' "$hero"
 grep -q 'data-lang="kotlin"' "$hero"

@@ -133,6 +133,26 @@ class HeroesTest(unittest.TestCase):
             self.assertEqual(calls, [])
             self.assertFalse((root / "content" / "posts" / "open" / "hero.webp").exists())
 
+    def test_placeholder_is_a_tiny_inline_webp(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            manual = root / "content" / "posts" / "manual"
+            blocked = root / "content" / "posts" / "blocked"
+            write_post(manual, 'hero = "hero.jpg"\n')
+            write_post(blocked, "hero = false\n")
+            image = Image.new("RGB", (400, 200), (20, 90, 140))
+            image.save(manual / "hero.jpg", format="JPEG")
+            dest = gen_heroes.write_placeholders(root)
+            found = json.loads(dest.read_text())
+            self.assertEqual(list(found), ["posts/manual/index.md"])
+            uri = found["posts/manual/index.md"]
+            self.assertTrue(uri.startswith("data:image/webp;base64,"))
+            raw = base64.b64decode(uri.split(",", 1)[1])
+            with Image.open(io.BytesIO(raw)) as preview:
+                self.assertEqual(preview.format, "WEBP")
+                self.assertGreaterEqual(preview.size[0], 16)
+                self.assertLessEqual(preview.size[0], 32)
+
     def test_sample_posts_cover_the_three_front_matter_states(self):
         root = Path(__file__).resolve().parents[1]
         found = {}

@@ -443,6 +443,7 @@ body:has(header.hero):not(.is-scrolled) .progress > span {
   color: #fff;
   margin-bottom: 2.5rem;
   background: var(--bg);
+  overflow: hidden;
 }
 
 .hero img {
@@ -455,8 +456,19 @@ body:has(header.hero):not(.is-scrolled) .progress > span {
   mask-image: linear-gradient(#000 65%, transparent);
 }
 
+.hero-lqip {
+  z-index: 0;
+  filter: blur(18px);
+  transform: scale(1.12);
+}
+
+.hero-photo {
+  z-index: 1;
+}
+
 .hero-fade {
   position: absolute;
+  z-index: 2;
   left: 0;
   right: 0;
   bottom: 0;
@@ -467,6 +479,7 @@ body:has(header.hero):not(.is-scrolled) .progress > span {
 
 .hero-shade {
   position: absolute;
+  z-index: 2;
   inset: 0;
   pointer-events: none;
   background: linear-gradient(
@@ -481,7 +494,7 @@ body:has(header.hero):not(.is-scrolled) .progress > span {
 
 .hero-text {
   position: relative;
-  z-index: 1;
+  z-index: 3;
   width: min(var(--column), calc(100% - 2.5rem));
   margin: 0 auto 12vh;
 }
