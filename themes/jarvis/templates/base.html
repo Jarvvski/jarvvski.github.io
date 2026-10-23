@@ -13,6 +13,7 @@
       document.documentElement.setAttribute("data-theme", theme);
     })();
   </script>
+  {% block head %}{% endblock %}
   {% include "partials/seo.html" %}
   <link rel="icon" href="{{ get_url(path='favicon.svg', trailing_slash=false) }}" type="image/svg+xml">
   <link rel="stylesheet" href="{{ get_url(path='style.css', trailing_slash=false) }}">
@@ -34,7 +35,6 @@
   </noscript>
   <link rel="alternate" type="application/atom+xml" title="{{ config.title }}" href="{{ get_url(path='atom.xml', trailing_slash=false) }}">
   <link rel="alternate" type="application/rss+xml" title="{{ config.title }}" href="{{ get_url(path='rss.xml', trailing_slash=false) }}">
-  {% block head %}{% endblock %}
 </head>
 <body>
   <a class="skip" href="#content">Skip to content</a>

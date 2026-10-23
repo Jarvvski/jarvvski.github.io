@@ -53,6 +53,13 @@ if grep -q '2400w' "$hero" || grep -q '2400w' "$open_picture"; then
 fi
 grep -q 'property="og:image" content="[^"]*\.jpg"' "$hero"
 grep -q 'property="og:image" content="[^"]*\.jpg"' "$open_picture"
+grep -q 'rel="preload" as="image"' "$hero"
+grep -q 'rel="preload" as="image"' "$open_picture"
+grep -q 'imagesizes="100vw"' "$hero"
+grep -q 'fetchpriority="high"' "$hero"
+if grep -q 'rel="preload" as="image"' "$second"; then
+  fail "text post preloaded a hero"
+fi
 grep -q 'data-lang="rust"' "$hero"
 grep -q 'data-lang="kotlin"' "$hero"
 grep -q 'data-lang="go"' "$hero"
