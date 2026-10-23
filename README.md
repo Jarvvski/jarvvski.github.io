@@ -75,7 +75,7 @@ python3 scripts/gen_heroes.py
 
 If either variable is missing, the script prints a notice and exits 0. An existing `hero.webp` is left as it is. Delete that file to draw a new one.
 
-The model id is `hero_model` in `config.toml`. The default is `@cf/black-forest-labs/flux-2-klein-9b`. The script sends `prompt`, `width`, and `height` as that model's REST API does, at 1024 pixels, then saves a webp no wider than 2400px. The model page is [flux-2-klein-9b](https://developers.cloudflare.com/workers-ai/models/flux-2-klein-9b/).
+The model id is `hero_model` in `config.toml`. The default is `@cf/black-forest-labs/flux-2-klein-9b`. `hero_width` and `hero_height` set the requested size. The default is 1920 by 1080. The launch notes for this model allow each side from 256 to 1920. The script saves a webp no wider than 2400px. The model page is [flux-2-klein-9b](https://developers.cloudflare.com/workers-ai/models/flux-2-klein-9b/).
 
 The repository secrets use those same two names.
 

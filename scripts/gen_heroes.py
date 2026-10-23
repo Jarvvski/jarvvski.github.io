@@ -12,8 +12,8 @@ from PIL import Image
 
 DEFAULT_MODEL = "@cf/black-forest-labs/flux-2-klein-9b"
 GENERATED_NAME = "hero.webp"
-REQUEST_WIDTH = 1024
-REQUEST_HEIGHT = 1024
+DEFAULT_WIDTH = 1920
+DEFAULT_HEIGHT = 1080
 MAX_EDGE = 2400
 HOUSE = (
     "A wide editorial photograph with natural light and a quiet palette. "
@@ -37,6 +37,21 @@ def model_id(root: Path, env: dict) -> str:
         if isinstance(configured, str) and configured.strip():
             return configured.strip()
     return DEFAULT_MODEL
+
+
+def image_size(root: Path) -> tuple[int, int]:
+    width = DEFAULT_WIDTH
+    height = DEFAULT_HEIGHT
+    path = root / "config.toml"
+    if path.is_file():
+        extra = tomllib.loads(path.read_text()).get("extra") or {}
+        if "hero_width" in extra:
+            width = extra["hero_width"]
+        if "hero_height" in extra:
+            height = extra["hero_height"]
+    if isinstance(width, bool) or isinstance(height, bool) or not isinstance(width, int) or not isinstance(height, int):
+        raise HeroError("hero_width and hero_height must be whole numbers")
+    return width, height
 
 
 def clean_model(model: str) -> str:
@@ -153,13 +168,13 @@ def ensure_meta(path: Path, alt: str) -> bool:
     return True
 
 
-def api_request(account: str, token: str, model: str, prompt: str):
+def api_request(account: str, token: str, model: str, prompt: str, width: int, height: int):
     url = f"https://api.cloudflare.com/client/v4/accounts/{account}/ai/run/{model}"
     boundary = "----jarvisHero"
     fields = (
         ("prompt", prompt),
-        ("width", str(REQUEST_WIDTH)),
-        ("height", str(REQUEST_HEIGHT)),
+        ("width", str(width)),
+        ("height", str(height)),
     )
     chunks = []
     for name, value in fields:
@@ -228,6 +243,7 @@ def generate(root: Path, env: dict, fetch) -> int:
         print("Hero generation skipped. CLOUDFLARE_ACCOUNT_ID or CLOUDFLARE_AI_TOKEN is unset.")
         return 0
     model = clean_model(model_id(root, env))
+    width, height = image_size(root)
     wrote = 0
     for path, data in posts(root):
         if data.get("draft") is True:
@@ -245,7 +261,7 @@ def generate(root: Path, env: dict, fetch) -> int:
         if kind != "pending":
             continue
         prompt = prompt_for(title, description, hero_prompt)
-        url, body, headers = api_request(account, token, model, prompt)
+        url, body, headers = api_request(account, token, model, prompt, width, height)
         status, content_type, payload = fetch(url, body, headers)
         if status >= 400:
             detail = payload[:300].decode(errors="replace").replace("\n", " ")

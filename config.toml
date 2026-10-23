@@ -43,3 +43,5 @@ github = "https://github.com/Jarvvski"
 x = "https://x.com/__adamjarvis"
 cloudflare_analytics_token = ""
 hero_model = "@cf/black-forest-labs/flux-2-klein-9b"
+hero_width = 1920
+hero_height = 1080

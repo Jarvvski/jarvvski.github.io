@@ -82,7 +82,8 @@ class HeroesTest(unittest.TestCase):
             self.assertIn(b"an empty chair by a window", body)
             self.assertIn(b'name="width"', body)
             self.assertIn(b'name="height"', body)
-            self.assertIn(b"1024", body)
+            self.assertIn(b"\r\n1920\r\n", body)
+            self.assertIn(b"\r\n1080\r\n", body)
             self.assertTrue(headers["Authorization"].startswith("Bearer "))
             image = open_post / "hero.webp"
             self.assertTrue(image.is_file())
@@ -104,6 +105,23 @@ class HeroesTest(unittest.TestCase):
             self.assertEqual(gen_heroes.main(root, env, fetch), 0)
             self.assertEqual(len(calls), 2)
             self.assertTrue(image.is_file())
+
+    def test_size_comes_from_config(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "config.toml").write_text("[extra]\nhero_width = 1280\nhero_height = 720\n")
+            write_post(root / "content" / "posts" / "open", "")
+            calls = []
+
+            def fetch(url, body, headers):
+                calls.append(body)
+                return 200, "application/json", jpeg_payload()
+
+            env = {"CLOUDFLARE_ACCOUNT_ID": "account", "CLOUDFLARE_AI_TOKEN": "token"}
+            self.assertEqual(gen_heroes.main(root, env, fetch), 0)
+            self.assertIn(b"\r\n1280\r\n", calls[0])
+            self.assertIn(b"\r\n720\r\n", calls[0])
+            self.assertNotIn(b"\r\n1920\r\n", calls[0])
 
     def test_missing_secret_skips(self):
         with tempfile.TemporaryDirectory() as tmp:

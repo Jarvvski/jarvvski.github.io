@@ -7,8 +7,6 @@ date = 2026-10-21
 tags = ["notes"]
 
 [extra]
-hero_alt = "A quiet writing desk by a window, morning light, an empty chair, paper and a cup"
-hero_generated = true
 hero_prompt = "A quiet writing desk by a window, morning light, an empty chair, paper and a cup"
 series = "Notes"
 +++
