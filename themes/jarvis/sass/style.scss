@@ -391,12 +391,14 @@ body:has(header.hero):not(.is-scrolled) .progress > span {
     #{"rgb(from var(--bg) r g b / 64%)"} 8%,
     #{"rgb(from var(--bg) r g b / 16%)"} 16%,
     #{"rgb(from var(--bg) r g b / 2%)"} 24%,
-    #{"rgb(from var(--bg) r g b / 2%)"} 48%,
-    #{"rgb(from var(--bg) r g b / 12%)"} 58%,
-    #{"rgb(from var(--bg) r g b / 28%)"} 68%,
-    #{"rgb(from var(--bg) r g b / 48%)"} 76%,
-    #{"rgb(from var(--bg) r g b / 70%)"} 84%,
-    #{"rgb(from var(--bg) r g b / 88%)"} 92%,
+    #{"rgb(from var(--bg) r g b / 2%)"} 46%,
+    #{"rgb(from var(--bg) r g b / 10%)"} 52%,
+    #{"rgb(from var(--bg) r g b / 28%)"} 58%,
+    #{"rgb(from var(--bg) r g b / 48%)"} 64%,
+    #{"rgb(from var(--bg) r g b / 70%)"} 70%,
+    #{"rgb(from var(--bg) r g b / 82%)"} 76%,
+    #{"rgb(from var(--bg) r g b / 92%)"} 84%,
+    #{"rgb(from var(--bg) r g b / 97%)"} 92%,
     #{"rgb(from var(--bg) r g b / 100%)"} 100%
   );
   pointer-events: none;
