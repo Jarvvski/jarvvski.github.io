@@ -1,0 +1,44 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+
+      - name: Install Zola
+        run: |
+          curl -fsSL -o /tmp/zola.tar.gz https://github.com/getzola/zola/releases/download/v0.23.6/zola-v0.23.6-x86_64-unknown-linux-gnu.tar.gz
+          sudo tar -xzf /tmp/zola.tar.gz -C /usr/local/bin zola
+          zola --version
+
+      - name: Install Pillow
+        run: python3 -m pip install pillow==11.3.0
+
+      - name: Draw share images
+        run: python3 scripts/og_images.py
+
+      - name: Check links
+        run: bash scripts/check_links.sh
+
+      - name: Build
+        run: zola build
+
+      - name: Index search
+        run: npx --yes pagefind@1.5.2 --site public
+
+      - name: Verify output
+        run: bash scripts/verify.sh
