@@ -195,12 +195,7 @@ a {
 body:has(header.hero) .site-header {
   position: fixed;
   inset: 0 0 auto 0;
-  background: linear-gradient(
-    to bottom,
-    #{"rgb(from var(--bg) r g b / 88%)"} 0%,
-    #{"rgb(from var(--bg) r g b / 84%)"} 78%,
-    #{"rgb(from var(--bg) r g b / 0%)"} 100%
-  );
+  background: transparent;
   border-bottom-width: 0;
   backdrop-filter: none;
   color: #fff;
@@ -374,8 +369,6 @@ body:has(header.hero):not(.is-scrolled) .progress > span {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  -webkit-mask-image: linear-gradient(#000 70%, transparent);
-  mask-image: linear-gradient(#000 70%, transparent);
 }
 
 .hero-lqip {
@@ -391,11 +384,21 @@ body:has(header.hero):not(.is-scrolled) .progress > span {
 .hero-fade {
   position: absolute;
   z-index: 2;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 30%;
-  background: linear-gradient(to bottom, #{"rgb(from var(--bg) r g b / 0%)"}, var(--bg));
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    #{"rgb(from var(--bg) r g b / 72%)"} 0%,
+    #{"rgb(from var(--bg) r g b / 64%)"} 8%,
+    #{"rgb(from var(--bg) r g b / 16%)"} 16%,
+    #{"rgb(from var(--bg) r g b / 2%)"} 24%,
+    #{"rgb(from var(--bg) r g b / 2%)"} 48%,
+    #{"rgb(from var(--bg) r g b / 12%)"} 58%,
+    #{"rgb(from var(--bg) r g b / 28%)"} 68%,
+    #{"rgb(from var(--bg) r g b / 48%)"} 76%,
+    #{"rgb(from var(--bg) r g b / 70%)"} 84%,
+    #{"rgb(from var(--bg) r g b / 88%)"} 92%,
+    #{"rgb(from var(--bg) r g b / 100%)"} 100%
+  );
   pointer-events: none;
 }
 
@@ -404,7 +407,7 @@ body:has(header.hero):not(.is-scrolled) .progress > span {
   z-index: 3;
   width: min(var(--column), calc(100% - 2.5rem));
   margin: 0 auto 2.25rem;
-  text-shadow: 0 1px 2px #{"rgb(from var(--bg) r g b / 80%)"}, 0 12px 28px #{"rgb(from var(--bg) r g b / 50%)"};
+  text-shadow: 0 1px 10px #{"rgb(from var(--bg) r g b / 72%)"};
 }
 
 .hero h1 {
