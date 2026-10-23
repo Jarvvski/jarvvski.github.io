@@ -42,10 +42,10 @@ home="$public/index.html"
 search="$public/search/index.html"
 
 grep -q 'class="hero"' "$hero"
-grep -q 'class="hero-blur"' "$hero"
-grep -q 'class="hero-blur"' "$open_picture"
-if grep -q 'class="hero-blur"' "$second"; then
-  fail "text post blurred a hero"
+grep -q 'class="hero-fade"' "$hero"
+grep -q 'class="hero-fade"' "$open_picture"
+if grep -q 'hero-blur' "$hero" || grep -q 'hero-blur' "$open_picture" || grep -q 'hero-blur' "$public/style.css"; then
+  fail "hero blur remains"
 fi
 grep -q 'data:image/webp;base64,' "$hero"
 grep -q 'data:image/webp;base64,' "$open_picture"
