@@ -46,8 +46,11 @@ if grep -q 'data:image/webp;base64,' "$second"; then
   fail "text post inlined a hero preview"
 fi
 grep -q 'srcset=' "$hero"
-grep -q 'srcset="[^"]*\.webp 1200w' "$hero"
-grep -q 'srcset="[^"]*\.webp 1200w' "$open_picture"
+grep -q 'srcset="[^"]*\.webp 1200w, [^"]*\.webp 1800w"' "$hero"
+grep -q 'srcset="[^"]*\.webp 1200w, [^"]*\.webp 1800w"' "$open_picture"
+if grep -q '2400w' "$hero" || grep -q '2400w' "$open_picture"; then
+  fail "hero srcset still offers 2400w"
+fi
 grep -q 'property="og:image" content="[^"]*\.jpg"' "$hero"
 grep -q 'property="og:image" content="[^"]*\.jpg"' "$open_picture"
 grep -q 'data-lang="rust"' "$hero"
