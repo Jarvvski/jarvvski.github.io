@@ -1,19 +1,20 @@
 var darkVars = {
   background: "transparent",
-  primaryColor: "#24283b",
-  primaryTextColor: "#c0caf5",
+  primaryColor: "#2f334d",
+  primaryTextColor: "#c8d3f5",
   primaryBorderColor: "#3b4261",
-  secondaryColor: "#292e42",
-  secondaryTextColor: "#a9b1d6",
-  tertiaryColor: "#1a1b26",
-  tertiaryTextColor: "#c0caf5",
-  lineColor: "#a9b1d6",
-  textColor: "#c0caf5",
-  mainBkg: "#24283b",
-  nodeBorder: "#3b4261",
-  clusterBkg: "#1a1b26",
-  titleColor: "#c0caf5",
-  edgeLabelBackground: "#1a1b26"
+  secondaryColor: "#222436",
+  secondaryTextColor: "#c8d3f5",
+  tertiaryColor: "#1e2030",
+  tertiaryTextColor: "#c8d3f5",
+  lineColor: "#82aaff",
+  textColor: "#c8d3f5",
+  mainBkg: "#2f334d",
+  nodeBorder: "#82aaff",
+  clusterBkg: "#1e2030",
+  titleColor: "#c8d3f5",
+  edgeLabelBackground: "#1e2030",
+  nodeTextColor: "#c8d3f5"
 };
 
 function hosts() {

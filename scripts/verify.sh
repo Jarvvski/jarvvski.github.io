@@ -129,6 +129,12 @@ grep -q 'jarvis.gg' "$public/CNAME"
 grep -q 'Sitemap: https://jarvis.gg/sitemap.xml' "$public/robots.txt"
 grep -q 'prefers-reduced-motion' "$public/style.css"
 grep -q 'Source Serif 4' "$public/style.css"
+grep -qi '#222436' "$public/style.css"
+grep -qi '#82aaff' "$public/style.css"
+grep -qi '#c8d3f5' "$public/giallo.css"
+if grep -q '#1c1d21' "$public/style.css"; then
+  fail "old page grey remains"
+fi
 if grep -q 'fonts.googleapis.com' "$public/style.css"; then
   fail "stylesheet requests Google Fonts"
 fi

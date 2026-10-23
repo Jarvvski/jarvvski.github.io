@@ -36,21 +36,23 @@
 
 :root {
   color-scheme: dark;
-  --bg: #1c1d21;
-  --text: #e8e8e8;
-  --muted: #b0b0b0;
-  --line: #3a3c46;
-  --soft: #262833;
-  --code-bg: #14151c;
-  --code-fg: #c0caf5;
-  --header-bg: rgba(28, 29, 33, 0.92);
+  --bg: #222436;
+  --text: #c8d3f5;
+  --muted: #828bb8;
+  --line: #3b4261;
+  --soft: #2f334d;
+  --code-bg: #1e2030;
+  --code-fg: #c8d3f5;
+  --link: #82aaff;
+  --link-hover: #c099ff;
+  --header-bg: rgba(34, 36, 54, 0.92);
   --column: 42.5rem;
   --header-h: 4rem;
-  --pagefind-ui-primary: #e8e8e8;
-  --pagefind-ui-text: #e8e8e8;
-  --pagefind-ui-background: #1c1d21;
-  --pagefind-ui-border: #3a3c46;
-  --pagefind-ui-tag: #262833;
+  --pagefind-ui-primary: #c8d3f5;
+  --pagefind-ui-text: #c8d3f5;
+  --pagefind-ui-background: #222436;
+  --pagefind-ui-border: #3b4261;
+  --pagefind-ui-tag: #2f334d;
   --pagefind-ui-border-width: 1px;
   --pagefind-ui-border-radius: 8px;
   --pagefind-ui-font: Inter, system-ui, sans-serif;
@@ -116,8 +118,8 @@ a {
 }
 
 ::selection {
-  background: #3d4f7c;
-  color: #f4f1ea;
+  background: #2d3f76;
+  color: #c8d3f5;
 }
 
 .skip {
@@ -186,13 +188,19 @@ a {
 
 .site-nav a:hover,
 .site-nav a:focus-visible {
+  color: var(--link);
   background-size: 100% 1px;
 }
 
 body:has(header.hero) .site-header {
   position: fixed;
   inset: 0 0 auto 0;
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0));
+  background: linear-gradient(
+    to bottom,
+    #{"rgb(from var(--bg) r g b / 88%)"} 0%,
+    #{"rgb(from var(--bg) r g b / 84%)"} 78%,
+    #{"rgb(from var(--bg) r g b / 0%)"} 100%
+  );
   border-bottom-width: 0;
   backdrop-filter: none;
   color: #fff;
@@ -458,16 +466,18 @@ body:has(header.hero):not(.is-scrolled) .progress > span {
 }
 
 .prose a {
+  color: var(--link);
   text-decoration: none;
   background-image: linear-gradient(currentColor, currentColor);
   background-repeat: no-repeat;
   background-position: 0 100%;
   background-size: 100% 1px;
-  transition: background-size 180ms ease;
+  transition: background-size 180ms ease, color 180ms ease;
 }
 
 .prose a:hover,
 .prose a:focus-visible {
+  color: var(--link-hover);
   background-size: 100% 2px;
 }
 
@@ -505,6 +515,7 @@ body:has(header.hero):not(.is-scrolled) .progress > span {
 
 .prose a.zola-anchor {
   margin-left: 0.35em;
+  color: var(--muted);
   text-decoration: none;
   opacity: 0;
   font-weight: 500;
@@ -538,12 +549,18 @@ h4:hover .zola-anchor,
 }
 
 .series a,
-.toc a {
+.toc a,
+.post-list h2 a,
+.text-link {
+  color: var(--link);
   text-decoration: none;
 }
 
 .series a:hover,
-.toc a:hover {
+.toc a:hover,
+.post-list h2 a:hover,
+.text-link:hover {
+  color: var(--link-hover);
   text-decoration: underline;
   text-underline-offset: 0.18em;
 }
@@ -659,6 +676,7 @@ pre.giallo code {
 }
 
 .site-footer a:hover {
+  color: var(--link);
   text-decoration: underline;
   text-underline-offset: 0.2em;
 }
