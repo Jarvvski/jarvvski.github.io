@@ -41,7 +41,7 @@
 
   var header = document.querySelector(".site-header");
   var hero = document.querySelector("header.hero");
-  if (header && hero && document.body.classList.contains("has-hero")) {
+  if (header && hero) {
     var onHeroScroll = function () {
       var past = hero.getBoundingClientRect().bottom <= header.offsetHeight;
       header.classList.toggle("is-solid", past);

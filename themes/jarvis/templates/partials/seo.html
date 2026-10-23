@@ -33,8 +33,10 @@
   <meta property="og:type" content="website">
 {% endif %}
 
-{% if page is defined and page.extra?.hero %}
-  {% set og_hero = resize_image(path=page.path ~ page.extra.hero, width=1200, height=630, op="fill", format="jpg", quality=80) %}
+{% set hero_src_raw %}{% include "partials/resolve_hero.html" %}{% endset %}
+{% set hero_src = hero_src_raw | trim %}
+{% if hero_src %}
+  {% set og_hero = resize_image(path=page.path ~ hero_src, width=1200, height=630, op="fill", format="jpg", quality=80) %}
   <meta property="og:image" content="{{ og_hero.url }}">
   <meta property="og:image:width" content="{{ og_hero.width }}">
   <meta property="og:image:height" content="{{ og_hero.height }}">

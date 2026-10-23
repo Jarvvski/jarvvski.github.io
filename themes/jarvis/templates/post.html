@@ -1,7 +1,5 @@
 {% extends "base.html" %}
 
-{% block body_class %}{% if page.extra?.hero %}has-hero{% endif %}{% endblock %}
-
 {% block progress %}
 <div class="progress" aria-hidden="true"><span></span></div>
 {% endblock %}
@@ -9,8 +7,10 @@
 {% block main_attrs %}data-pagefind-body{% endblock %}
 
 {% block content %}
-{% if page.extra?.hero %}
-  {% set hero_path = page.path ~ page.extra.hero %}
+{% set hero_src_raw %}{% include "partials/resolve_hero.html" %}{% endset %}
+{% set hero_src = hero_src_raw | trim %}
+{% if hero_src %}
+  {% set hero_path = page.path ~ hero_src %}
   {% set hero_1200 = resize_image(path=hero_path, width=1200, op="fit_width", format="jpg", quality=80) %}
   {% set hero_1800 = resize_image(path=hero_path, width=1800, op="fit_width", format="jpg", quality=80) %}
   {% set hero_2400 = resize_image(path=hero_path, width=2400, op="fit_width", format="jpg", quality=80) %}
@@ -31,12 +31,17 @@
       {% if page?.description %}
         <p class="deck">{{ page.description }}</p>
       {% endif %}
-      {% if page.extra?.hero_credit %}
+      {% if page.extra?.hero_credit or page.extra?.hero_generated %}
         <p class="hero-credit">
-          {% if page.extra?.hero_credit_url %}
-            <a href="{{ page.extra.hero_credit_url }}">{{ page.extra.hero_credit }}</a>
-          {% else %}
-            {{ page.extra.hero_credit }}
+          {% if page.extra?.hero_credit %}
+            {% if page.extra?.hero_credit_url %}
+              <a href="{{ page.extra.hero_credit_url }}">{{ page.extra.hero_credit }}</a>
+            {% else %}
+              {{ page.extra.hero_credit }}
+            {% endif %}
+          {% endif %}
+          {% if page.extra?.hero_generated %}
+            <span>Generated image</span>
           {% endif %}
         </p>
       {% endif %}
@@ -45,7 +50,7 @@
 {% endif %}
 
 <article class="column prose">
-  {% if not page.extra?.hero %}
+  {% if not hero_src %}
     {% include "partials/meta.html" %}
     <h1>{{ page.title }}</h1>
     {% if page?.description %}

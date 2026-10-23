@@ -36,7 +36,7 @@
   <link rel="alternate" type="application/rss+xml" title="{{ config.title }}" href="{{ get_url(path='rss.xml', trailing_slash=false) }}">
   {% block head %}{% endblock %}
 </head>
-<body class="{% block body_class %}{% endblock %}">
+<body>
   <a class="skip" href="#content">Skip to content</a>
   {% block progress %}{% endblock %}
   {% include "partials/header.html" %}

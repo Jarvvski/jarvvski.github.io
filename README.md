@@ -33,8 +33,12 @@ Required fields are `title`, `date`, and `description`. The rest are optional.
 
 - `updated` prints an updated date next to the published date.
 - `draft = true` leaves the post out of the build. Preview it with `zola serve --drafts`.
-- `hero` is an image file in the same folder. The page uses a full-height picture with the title on it. Zola makes the smaller sizes. Set `hero_alt`. `hero_credit` and `hero_credit_url` are the caption.
-- A post with no `hero` gets a plain text header. The build draws a share image from the title.
+- `hero` chooses the picture.
+  - `hero = "hero.jpg"` uses that file. Set `hero_alt`. `hero_credit` and `hero_credit_url` are the caption.
+  - Leave `hero` out and a `hero.webp` in the folder is used. The hero workflow can draw that file. See below.
+  - `hero = false` keeps the text header. The build draws a share image from the title.
+- `hero_prompt` is the subject for a generated picture. Without it, the generator uses the title and the description. One house style wraps every subject, so the pictures stay consistent, and it asks for no text and no real people.
+- `hero_generated = true` marks a generated picture. The page prints "Generated image" under the title.
 - `toc = true` lists the headings.
 - `series` lists every post that uses the same name, oldest first.
 - Tags go under `[taxonomies]`.
@@ -58,6 +62,22 @@ photo_alt = "Adam Jarvis"
 ```
 
 Do not put an email address on the site.
+
+## Generate a hero
+
+The hero workflow runs on a pull request from this repository. It does not run for forks, and the Pages deploy does not call it.
+
+Set `CLOUDFLARE_ACCOUNT_ID` and `CLOUDFLARE_AI_TOKEN`, then from the repo root run:
+
+```bash
+python3 scripts/gen_heroes.py
+```
+
+If either variable is missing, the script prints a notice and exits 0. An existing `hero.webp` is left as it is. Delete that file to draw a new one.
+
+The model id is `hero_model` in `config.toml`. The default is `@cf/black-forest-labs/flux-2-klein-9b`. The script sends `prompt`, `width`, and `height` as that model's REST API does, at 1024 pixels, then saves a webp no wider than 2400px. The model page is [flux-2-klein-9b](https://developers.cloudflare.com/workers-ai/models/flux-2-klein-9b/).
+
+The repository secrets use those same two names.
 
 ## Preview locally
 

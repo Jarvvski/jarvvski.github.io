@@ -3,3 +3,4 @@ static/processed_images/
 static/og/
 .audit/
 .DS_Store
+__pycache__/

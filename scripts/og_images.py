@@ -84,7 +84,10 @@ def pages():
         if data.get("draft") is True:
             continue
         extra = data.get("extra") or {}
-        if extra.get("hero"):
+        if "hero" in extra:
+            if extra.get("hero"):
+                continue
+        elif (path.parent / "hero.webp").is_file():
             continue
         title = data.get("title") or "Adam Jarvis"
         yield slug_for(path, data), str(title)

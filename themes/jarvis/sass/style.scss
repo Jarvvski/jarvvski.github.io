@@ -267,7 +267,7 @@ a {
   stroke: none;
 }
 
-body.has-hero .site-header {
+body:has(header.hero) .site-header {
   position: fixed;
   inset: 0 0 auto 0;
   background: linear-gradient(to bottom, rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0));
@@ -276,11 +276,11 @@ body.has-hero .site-header {
   color: #fff;
 }
 
-body.has-hero .site-header .theme-toggle {
+body:has(header.hero) .site-header .theme-toggle {
   border-color: rgba(255, 255, 255, 0.45);
 }
 
-body.has-hero .site-header.is-solid {
+body:has(header.hero) .site-header.is-solid {
   background: var(--header-bg);
   border-bottom-width: 1px;
   border-bottom-color: var(--line);
@@ -288,7 +288,7 @@ body.has-hero .site-header.is-solid {
   color: var(--text);
 }
 
-body.has-hero .site-header.is-solid .theme-toggle {
+body:has(header.hero) .site-header.is-solid .theme-toggle {
   border-color: var(--line);
 }
 
@@ -310,7 +310,7 @@ body.has-hero .site-header.is-solid .theme-toggle {
   transition: width 80ms linear;
 }
 
-body.has-hero:not(.is-scrolled) .progress > span {
+body:has(header.hero):not(.is-scrolled) .progress > span {
   background: #fff;
 }
 

@@ -8,6 +8,7 @@ updated = 2026-10-23
 tags = ["notes"]
 
 [extra]
+hero = false
 series = "Notes"
 +++
 

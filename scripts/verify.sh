@@ -10,6 +10,7 @@ test -f "$public/about/index.html"
 test -f "$public/search/index.html"
 test -f "$public/posts/a-place-for-notes/index.html"
 test -f "$public/posts/a-second-note/index.html"
+test -f "$public/posts/an-open-picture/index.html"
 test -f "$public/404.html"
 test -f "$public/sitemap.xml"
 test -f "$public/robots.txt"
@@ -33,6 +34,7 @@ fi
 
 hero="$public/posts/a-place-for-notes/index.html"
 second="$public/posts/a-second-note/index.html"
+open_picture="$public/posts/an-open-picture/index.html"
 about="$public/about/index.html"
 home="$public/index.html"
 search="$public/search/index.html"
@@ -63,6 +65,11 @@ grep -q 'og/a-second-note.png' "$second"
 if grep -q 'class="hero"' "$second"; then
   fail "text post rendered a hero"
 fi
+grep -q 'og/an-open-picture.png' "$open_picture"
+if grep -q 'class="hero"' "$open_picture"; then
+  fail "open picture rendered a hero with no file"
+fi
+grep -q 'An open picture' "$hero"
 if grep -q 'class="toc"' "$second"; then
   fail "toc rendered without the flag"
 fi

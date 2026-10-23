@@ -28,6 +28,9 @@ jobs:
       - name: Install Pillow
         run: python3 -m pip install pillow==11.3.0
 
+      - name: Test hero generation
+        run: python3 scripts/test_gen_heroes.py
+
       - name: Draw share images
         run: python3 scripts/og_images.py
 
