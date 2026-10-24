@@ -3,38 +3,14 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <script>
-    (function () {
-      var theme = null;
-      try { theme = localStorage.getItem("theme"); } catch (e) {}
-      if (theme !== "light" && theme !== "dark") {
-        theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-      }
-      document.documentElement.setAttribute("data-theme", theme);
-    })();
-  </script>
+  <meta name="color-scheme" content="dark">
+  {% block head %}{% endblock %}
   {% include "partials/seo.html" %}
   <link rel="icon" href="{{ get_url(path='favicon.svg', trailing_slash=false) }}" type="image/svg+xml">
   <link rel="stylesheet" href="{{ get_url(path='style.css', trailing_slash=false) }}">
-  <link id="hl-light" rel="stylesheet" href="{{ get_url(path='giallo-light.css', trailing_slash=false) }}" media="not all">
-  <link id="hl-dark" rel="stylesheet" href="{{ get_url(path='giallo-dark.css', trailing_slash=false) }}" media="not all">
-  <script>
-    (function () {
-      var dark = document.documentElement.getAttribute("data-theme") === "dark";
-      var light = document.getElementById("hl-light");
-      var darkLink = document.getElementById("hl-dark");
-      if (!light || !darkLink) return;
-      light.media = dark ? "not all" : "all";
-      darkLink.media = dark ? "all" : "not all";
-    })();
-  </script>
-  <noscript>
-    <link rel="stylesheet" href="{{ get_url(path='giallo-light.css', trailing_slash=false) }}" media="(prefers-color-scheme: light)">
-    <link rel="stylesheet" href="{{ get_url(path='giallo-dark.css', trailing_slash=false) }}" media="(prefers-color-scheme: dark)">
-  </noscript>
+  <link rel="stylesheet" href="{{ get_url(path='giallo.css', trailing_slash=false) }}">
   <link rel="alternate" type="application/atom+xml" title="{{ config.title }}" href="{{ get_url(path='atom.xml', trailing_slash=false) }}">
   <link rel="alternate" type="application/rss+xml" title="{{ config.title }}" href="{{ get_url(path='rss.xml', trailing_slash=false) }}">
-  {% block head %}{% endblock %}
 </head>
 <body>
   <a class="skip" href="#content">Skip to content</a>

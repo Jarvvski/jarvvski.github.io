@@ -34,6 +34,9 @@ jobs:
       - name: Draw share images
         run: python3 scripts/og_images.py
 
+      - name: Write hero previews
+        run: python3 scripts/gen_heroes.py
+
       - name: Check links
         run: bash scripts/check_links.sh
 

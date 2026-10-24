@@ -17,8 +17,10 @@ test -f "$public/robots.txt"
 test -f "$public/atom.xml"
 test -f "$public/rss.xml"
 test -f "$public/CNAME"
-test -f "$public/giallo-light.css"
-test -f "$public/giallo-dark.css"
+test -f "$public/giallo.css"
+if test -f "$public/giallo-light.css" || test -f "$public/giallo-dark.css"; then
+  fail "syntax highlighting still ships a light or dual theme"
+fi
 test -f "$public/style.css"
 test -f "$public/og/default.png"
 test -f "$public/og/a-second-note.png"
@@ -40,7 +42,34 @@ home="$public/index.html"
 search="$public/search/index.html"
 
 grep -q 'class="hero"' "$hero"
+grep -q 'class="hero-fade"' "$hero"
+grep -q 'class="hero-fade"' "$open_picture"
+if grep -q 'hero-blur' "$hero" || grep -q 'hero-blur' "$open_picture" || grep -q 'hero-blur' "$public/style.css"; then
+  fail "hero blur remains"
+fi
+if grep -q 'hero-shade' "$hero" || grep -q 'hero-shade' "$public/style.css"; then
+  fail "hero shade remains"
+fi
+grep -q 'data:image/webp;base64,' "$hero"
+grep -q 'data:image/webp;base64,' "$open_picture"
+if grep -q 'data:image/webp;base64,' "$second"; then
+  fail "text post inlined a hero preview"
+fi
 grep -q 'srcset=' "$hero"
+grep -q 'srcset="[^"]*\.webp 1200w, [^"]*\.webp 1800w"' "$hero"
+grep -q 'srcset="[^"]*\.webp 1200w, [^"]*\.webp 1800w"' "$open_picture"
+if grep -q '2400w' "$hero" || grep -q '2400w' "$open_picture"; then
+  fail "hero srcset still offers 2400w"
+fi
+grep -q 'property="og:image" content="[^"]*\.jpg"' "$hero"
+grep -q 'property="og:image" content="[^"]*\.jpg"' "$open_picture"
+grep -q 'rel="preload" as="image"' "$hero"
+grep -q 'rel="preload" as="image"' "$open_picture"
+grep -q 'imagesizes="100vw"' "$hero"
+grep -q 'fetchpriority="high"' "$hero"
+if grep -q 'rel="preload" as="image"' "$second"; then
+  fail "text post preloaded a hero"
+fi
 grep -q 'data-lang="rust"' "$hero"
 grep -q 'data-lang="kotlin"' "$hero"
 grep -q 'data-lang="go"' "$hero"
@@ -54,10 +83,20 @@ grep -q 'twitter:card' "$hero"
 grep -q 'application/ld+json' "$hero"
 grep -q '"@type": "Article"' "$hero" || grep -q '"@type":"Article"' "$hero"
 grep -q 'js/mermaid.js' "$hero"
-grep -q 'localStorage.getItem("theme")' "$hero"
-grep -q 'id="theme-toggle"' "$hero"
-grep -q 'id="hl-light"' "$hero"
-grep -q 'id="hl-dark"' "$hero"
+grep -q 'giallo.css' "$hero"
+grep -q 'name="color-scheme" content="dark"' "$hero"
+if grep -q 'theme-toggle\|giallo-light\|localStorage\|prefers-color-scheme' "$hero"; then
+  fail "light theme switch remains in the page"
+fi
+if grep -q 'prefers-color-scheme' "$public/style.css"; then
+  fail "stylesheet still switches on color scheme"
+fi
+if grep -q 'lightVars' "$public/js/mermaid.js"; then
+  fail "mermaid still has a light theme"
+fi
+if grep -q 'setItem("theme"\|getItem("theme"' "$public/js/site.js"; then
+  fail "site script still stores a theme"
+fi
 
 grep -q 'Updated' "$second"
 grep -q 'a-place-for-notes' "$second"
@@ -90,6 +129,12 @@ grep -q 'jarvis.gg' "$public/CNAME"
 grep -q 'Sitemap: https://jarvis.gg/sitemap.xml' "$public/robots.txt"
 grep -q 'prefers-reduced-motion' "$public/style.css"
 grep -q 'Source Serif 4' "$public/style.css"
+grep -qi '#222436' "$public/style.css"
+grep -qi '#82aaff' "$public/style.css"
+grep -qi '#c8d3f5' "$public/giallo.css"
+if grep -q '#1c1d21' "$public/style.css"; then
+  fail "old page grey remains"
+fi
 if grep -q 'fonts.googleapis.com' "$public/style.css"; then
   fail "stylesheet requests Google Fonts"
 fi

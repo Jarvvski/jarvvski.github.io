@@ -1,37 +1,20 @@
 var darkVars = {
   background: "transparent",
-  primaryColor: "#24283b",
-  primaryTextColor: "#c0caf5",
+  primaryColor: "#2f334d",
+  primaryTextColor: "#c8d3f5",
   primaryBorderColor: "#3b4261",
-  secondaryColor: "#292e42",
-  secondaryTextColor: "#a9b1d6",
-  tertiaryColor: "#1a1b26",
-  tertiaryTextColor: "#c0caf5",
-  lineColor: "#a9b1d6",
-  textColor: "#c0caf5",
-  mainBkg: "#24283b",
-  nodeBorder: "#3b4261",
-  clusterBkg: "#1a1b26",
-  titleColor: "#c0caf5",
-  edgeLabelBackground: "#1a1b26"
-};
-
-var lightVars = {
-  background: "transparent",
-  primaryColor: "#d5d6e0",
-  primaryTextColor: "#343b58",
-  primaryBorderColor: "#9699a3",
-  secondaryColor: "#e1e2ea",
-  secondaryTextColor: "#343b58",
-  tertiaryColor: "#e6e7ed",
-  tertiaryTextColor: "#343b58",
-  lineColor: "#343b58",
-  textColor: "#343b58",
-  mainBkg: "#d5d6e0",
-  nodeBorder: "#9699a3",
-  clusterBkg: "#e6e7ed",
-  titleColor: "#343b58",
-  edgeLabelBackground: "#ffffff"
+  secondaryColor: "#222436",
+  secondaryTextColor: "#c8d3f5",
+  tertiaryColor: "#1e2030",
+  tertiaryTextColor: "#c8d3f5",
+  lineColor: "#82aaff",
+  textColor: "#c8d3f5",
+  mainBkg: "#2f334d",
+  nodeBorder: "#82aaff",
+  clusterBkg: "#1e2030",
+  titleColor: "#c8d3f5",
+  edgeLabelBackground: "#1e2030",
+  nodeTextColor: "#c8d3f5"
 };
 
 function hosts() {
@@ -55,16 +38,15 @@ async function renderMermaid() {
     var mod = await import("https://cdn.jsdelivr.net/npm/mermaid@11.17.2/dist/mermaid.esm.min.mjs");
     mermaidApi = mod.default;
   }
-  var dark = document.documentElement.getAttribute("data-theme") === "dark";
   mermaidApi.initialize({
     startOnLoad: false,
     securityLevel: "strict",
     theme: "base",
-    themeVariables: dark ? darkVars : lightVars
+    themeVariables: darkVars
   });
   for (var i = 0; i < nodes.length; i++) {
     var host = nodes[i];
-    var id = "diagram-" + i + "-" + (dark ? "d" : "l");
+    var id = "diagram-" + i;
     var result = await mermaidApi.render(id, host.dataset.source);
     host.innerHTML = result.svg;
   }

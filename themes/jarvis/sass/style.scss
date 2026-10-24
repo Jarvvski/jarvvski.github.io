@@ -35,61 +35,27 @@
 }
 
 :root {
-  color-scheme: light;
-  --bg: #ffffff;
-  --text: #242424;
-  --muted: #5c5c5c;
-  --line: #e6e6e6;
-  --soft: #f4f4f4;
-  --code-bg: #e6e7ed;
-  --code-fg: #363c4d;
-  --header-bg: rgba(255, 255, 255, 0.92);
+  color-scheme: dark;
+  --bg: #222436;
+  --text: #c8d3f5;
+  --muted: #828bb8;
+  --line: #3b4261;
+  --soft: #2f334d;
+  --code-bg: #1e2030;
+  --code-fg: #c8d3f5;
+  --link: #82aaff;
+  --link-hover: #c099ff;
+  --header-bg: rgba(34, 36, 54, 0.92);
   --column: 42.5rem;
   --header-h: 4rem;
-  --pagefind-ui-primary: #242424;
-  --pagefind-ui-text: #242424;
-  --pagefind-ui-background: #ffffff;
-  --pagefind-ui-border: #e6e6e6;
-  --pagefind-ui-tag: #f4f4f4;
+  --pagefind-ui-primary: #c8d3f5;
+  --pagefind-ui-text: #c8d3f5;
+  --pagefind-ui-background: #222436;
+  --pagefind-ui-border: #3b4261;
+  --pagefind-ui-tag: #2f334d;
   --pagefind-ui-border-width: 1px;
   --pagefind-ui-border-radius: 8px;
   --pagefind-ui-font: Inter, system-ui, sans-serif;
-}
-
-:root[data-theme="dark"] {
-  color-scheme: dark;
-  --bg: #191919;
-  --text: #e8e8e8;
-  --muted: #b0b0b0;
-  --line: #2e2e2e;
-  --soft: #242424;
-  --code-bg: #1a1b26;
-  --code-fg: #a9b1d6;
-  --header-bg: rgba(25, 25, 25, 0.92);
-  --pagefind-ui-primary: #e8e8e8;
-  --pagefind-ui-text: #e8e8e8;
-  --pagefind-ui-background: #191919;
-  --pagefind-ui-border: #2e2e2e;
-  --pagefind-ui-tag: #242424;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme]) {
-    color-scheme: dark;
-    --bg: #191919;
-    --text: #e8e8e8;
-    --muted: #b0b0b0;
-    --line: #2e2e2e;
-    --soft: #242424;
-    --code-bg: #1a1b26;
-    --code-fg: #a9b1d6;
-    --header-bg: rgba(25, 25, 25, 0.92);
-    --pagefind-ui-primary: #e8e8e8;
-    --pagefind-ui-text: #e8e8e8;
-    --pagefind-ui-background: #191919;
-    --pagefind-ui-border: #2e2e2e;
-    --pagefind-ui-tag: #242424;
-  }
 }
 
 *,
@@ -152,13 +118,8 @@ a {
 }
 
 ::selection {
-  background: #d5def5;
-  color: #1a1b26;
-}
-
-:root[data-theme="dark"] ::selection {
-  background: #3d4f7c;
-  color: #f4f1ea;
+  background: #2d3f76;
+  color: #c8d3f5;
 }
 
 .skip {
@@ -227,57 +188,17 @@ a {
 
 .site-nav a:hover,
 .site-nav a:focus-visible {
+  color: var(--link);
   background-size: 100% 1px;
-}
-
-.theme-toggle {
-  width: 2.25rem;
-  height: 2.25rem;
-  display: grid;
-  place-items: center;
-  padding: 0;
-  border-radius: 999px;
-  border: 1px solid var(--line);
-  background: transparent;
-  color: inherit;
-  cursor: pointer;
-}
-
-.theme-toggle svg {
-  width: 1.1rem;
-  height: 1.1rem;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 1.7;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-.icon-moon {
-  display: none;
-}
-
-:root[data-theme="dark"] .icon-sun {
-  display: none;
-}
-
-:root[data-theme="dark"] .icon-moon {
-  display: block;
-  fill: currentColor;
-  stroke: none;
 }
 
 body:has(header.hero) .site-header {
   position: fixed;
   inset: 0 0 auto 0;
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0));
+  background: transparent;
   border-bottom-width: 0;
   backdrop-filter: none;
   color: #fff;
-}
-
-body:has(header.hero) .site-header .theme-toggle {
-  border-color: rgba(255, 255, 255, 0.45);
 }
 
 body:has(header.hero) .site-header.is-solid {
@@ -286,10 +207,6 @@ body:has(header.hero) .site-header.is-solid {
   border-bottom-color: var(--line);
   backdrop-filter: blur(12px);
   color: var(--text);
-}
-
-body:has(header.hero) .site-header.is-solid .theme-toggle {
-  border-color: var(--line);
 }
 
 .progress {
@@ -442,6 +359,8 @@ body:has(header.hero):not(.is-scrolled) .progress > span {
   align-items: flex-end;
   color: #fff;
   margin-bottom: 2.5rem;
+  background: var(--bg);
+  overflow: hidden;
 }
 
 .hero img {
@@ -452,18 +371,45 @@ body:has(header.hero):not(.is-scrolled) .progress > span {
   object-fit: cover;
 }
 
-.hero-shade {
+.hero-lqip {
+  z-index: 0;
+  filter: blur(18px);
+  transform: scale(1.12);
+}
+
+.hero-photo {
+  z-index: 1;
+}
+
+.hero-fade {
   position: absolute;
+  z-index: 2;
   inset: 0;
-  background:
-    linear-gradient(to top, rgba(0, 0, 0, 0.72) 0%, rgba(0, 0, 0, 0.18) 46%, rgba(0, 0, 0, 0.28) 100%);
+  background: linear-gradient(
+    to bottom,
+    #{"rgb(from var(--bg) r g b / 72%)"} 0%,
+    #{"rgb(from var(--bg) r g b / 64%)"} 8%,
+    #{"rgb(from var(--bg) r g b / 16%)"} 16%,
+    #{"rgb(from var(--bg) r g b / 2%)"} 24%,
+    #{"rgb(from var(--bg) r g b / 2%)"} 46%,
+    #{"rgb(from var(--bg) r g b / 10%)"} 52%,
+    #{"rgb(from var(--bg) r g b / 28%)"} 58%,
+    #{"rgb(from var(--bg) r g b / 48%)"} 64%,
+    #{"rgb(from var(--bg) r g b / 70%)"} 70%,
+    #{"rgb(from var(--bg) r g b / 82%)"} 76%,
+    #{"rgb(from var(--bg) r g b / 92%)"} 84%,
+    #{"rgb(from var(--bg) r g b / 97%)"} 92%,
+    #{"rgb(from var(--bg) r g b / 100%)"} 100%
+  );
+  pointer-events: none;
 }
 
 .hero-text {
   position: relative;
-  z-index: 1;
+  z-index: 3;
   width: min(var(--column), calc(100% - 2.5rem));
-  margin: 0 auto 12vh;
+  margin: 0 auto 2.25rem;
+  text-shadow: 0 1px 10px #{"rgb(from var(--bg) r g b / 72%)"};
 }
 
 .hero h1 {
@@ -522,16 +468,18 @@ body:has(header.hero):not(.is-scrolled) .progress > span {
 }
 
 .prose a {
+  color: var(--link);
   text-decoration: none;
   background-image: linear-gradient(currentColor, currentColor);
   background-repeat: no-repeat;
   background-position: 0 100%;
   background-size: 100% 1px;
-  transition: background-size 180ms ease;
+  transition: background-size 180ms ease, color 180ms ease;
 }
 
 .prose a:hover,
 .prose a:focus-visible {
+  color: var(--link-hover);
   background-size: 100% 2px;
 }
 
@@ -569,6 +517,7 @@ body:has(header.hero):not(.is-scrolled) .progress > span {
 
 .prose a.zola-anchor {
   margin-left: 0.35em;
+  color: var(--muted);
   text-decoration: none;
   opacity: 0;
   font-weight: 500;
@@ -602,12 +551,18 @@ h4:hover .zola-anchor,
 }
 
 .series a,
-.toc a {
+.toc a,
+.post-list h2 a,
+.text-link {
+  color: var(--link);
   text-decoration: none;
 }
 
 .series a:hover,
-.toc a:hover {
+.toc a:hover,
+.post-list h2 a:hover,
+.text-link:hover {
+  color: var(--link-hover);
   text-decoration: underline;
   text-underline-offset: 0.18em;
 }
@@ -665,6 +620,7 @@ pre.giallo {
   padding: 0.9rem 1rem 1.05rem;
   overflow-x: auto;
   background: transparent;
+  color: var(--code-fg);
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   font-size: 0.92rem;
   line-height: 1.55;
@@ -722,6 +678,7 @@ pre.giallo code {
 }
 
 .site-footer a:hover {
+  color: var(--link);
   text-decoration: underline;
   text-underline-offset: 0.2em;
 }
@@ -768,7 +725,7 @@ pre.giallo code {
   }
 
   .hero-text {
-    margin-bottom: 8vh;
+    margin-bottom: 1.5rem;
   }
 
   .footer-inner {

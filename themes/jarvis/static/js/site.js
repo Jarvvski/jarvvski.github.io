@@ -1,43 +1,7 @@
 (function () {
-  var root = document.documentElement;
-
-  function theme() {
-    return root.getAttribute("data-theme") === "dark" ? "dark" : "light";
-  }
-
-  function highlight(next) {
-    var light = document.getElementById("hl-light");
-    var dark = document.getElementById("hl-dark");
-    if (!light || !dark) return;
-    var isDark = next === "dark";
-    light.media = isDark ? "not all" : "all";
-    dark.media = isDark ? "all" : "not all";
-  }
-
-  function paint(next) {
-    root.setAttribute("data-theme", next);
-    highlight(next);
-    var button = document.getElementById("theme-toggle");
-    if (button) {
-      var other = next === "dark" ? "light" : "dark";
-      button.setAttribute("aria-label", "Switch to " + other + " theme");
-      button.setAttribute("aria-pressed", next === "dark" ? "true" : "false");
-    }
-    if (window.renderMermaid) window.renderMermaid();
-  }
-
-  paint(theme());
-
-  var toggle = document.getElementById("theme-toggle");
-  if (toggle) {
-    toggle.addEventListener("click", function () {
-      var next = theme() === "dark" ? "light" : "dark";
-      try {
-        localStorage.setItem("theme", next);
-      } catch (e) {}
-      paint(next);
-    });
-  }
+  try {
+    localStorage.removeItem("theme");
+  } catch (e) {}
 
   var header = document.querySelector(".site-header");
   var hero = document.querySelector("header.hero");

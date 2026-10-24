@@ -6,25 +6,37 @@
 
 {% block main_attrs %}data-pagefind-body{% endblock %}
 
+{% block head %}
+{% set picture_raw %}{% include "partials/hero_picture.html" %}{% endset %}
+{% set picture = picture_raw | trim %}
+{% if picture %}
+  {% set parts = picture | split(pat="|") %}
+  <link rel="preload" as="image" imagesrcset="{{ parts[0] }} 1200w, {{ parts[1] }} 1800w" imagesizes="100vw" fetchpriority="high">
+{% endif %}
+{% endblock %}
+
 {% block content %}
-{% set hero_src_raw %}{% include "partials/resolve_hero.html" %}{% endset %}
-{% set hero_src = hero_src_raw | trim %}
-{% if hero_src %}
-  {% set hero_path = page.path ~ hero_src %}
-  {% set hero_1200 = resize_image(path=hero_path, width=1200, op="fit_width", format="jpg", quality=80) %}
-  {% set hero_1800 = resize_image(path=hero_path, width=1800, op="fit_width", format="jpg", quality=80) %}
-  {% set hero_2400 = resize_image(path=hero_path, width=2400, op="fit_width", format="jpg", quality=80) %}
+{% set lqips = load_data(path="data/hero_placeholders.json") %}
+{% set picture_raw %}{% include "partials/hero_picture.html" %}{% endset %}
+{% set picture = picture_raw | trim %}
+{% if picture %}
+  {% set parts = picture | split(pat="|") %}
+  {% set lqip = lqips[page.relative_path] %}
   <header class="hero">
+    {% if lqip %}
+      <img class="hero-lqip" src="{{ lqip }}" alt="" aria-hidden="true">
+    {% endif %}
     <img
-      src="{{ hero_1800.url }}"
-      srcset="{{ hero_1200.url }} 1200w, {{ hero_1800.url }} 1800w, {{ hero_2400.url }} 2400w"
+      class="hero-photo"
+      src="{{ parts[1] }}"
+      srcset="{{ parts[0] }} 1200w, {{ parts[1] }} 1800w"
       sizes="100vw"
       alt="{{ page.extra?.hero_alt or '' }}"
-      width="{{ hero_1800.width }}"
-      height="{{ hero_1800.height }}"
+      width="{{ parts[2] }}"
+      height="{{ parts[3] }}"
       fetchpriority="high"
     >
-    <div class="hero-shade"></div>
+    <div class="hero-fade" aria-hidden="true"></div>
     <div class="hero-text">
       {% include "partials/meta.html" %}
       <h1>{{ page.title }}</h1>
@@ -50,7 +62,7 @@
 {% endif %}
 
 <article class="column prose">
-  {% if not hero_src %}
+  {% if not picture %}
     {% include "partials/meta.html" %}
     <h1>{{ page.title }}</h1>
     {% if page?.description %}
