@@ -2,7 +2,7 @@
 
 {% block content %}
 <div class="column home" data-pagefind-body>
-  <h1>{{ config.title }}</h1>
+  <h1>{{ config.extra.nav_name }}</h1>
   <div class="lede">{{ section.content | safe }}</div>
   {% set notes = get_section(path="posts/_index.md") %}
   {% if notes.pages %}

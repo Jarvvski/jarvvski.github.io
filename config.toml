@@ -34,6 +34,8 @@ internal_level = "error"
 external_level = "error"
 
 [extra]
+# Header link and home heading. title stays the full name for tabs, feeds, and SEO.
+nav_name = "Adam"
 author = "Adam Jarvis"
 github = "https://github.com/Jarvvski"
 x = "https://x.com/__adamjarvis"
