@@ -8,9 +8,7 @@ fail() { echo "verify: $1" >&2; exit 1; }
 test -f "$public/index.html"
 test -f "$public/about/index.html"
 test -f "$public/search/index.html"
-test -f "$public/posts/a-place-for-notes/index.html"
-test -f "$public/posts/a-second-note/index.html"
-test -f "$public/posts/an-open-picture/index.html"
+test -f "$public/posts/why-a-blog-why-now/index.html"
 test -f "$public/404.html"
 test -f "$public/sitemap.xml"
 test -f "$public/robots.txt"
@@ -23,7 +21,6 @@ if test -f "$public/giallo-light.css" || test -f "$public/giallo-dark.css"; then
 fi
 test -f "$public/style.css"
 test -f "$public/og/default.png"
-test -f "$public/og/a-second-note.png"
 test -f "$public/pagefind/pagefind.js"
 test -f "$public/pagefind/pagefind-ui.js"
 
@@ -33,59 +30,35 @@ fi
 if grep -R -n "Not yet" "$public" --include='*.html' --include='*.xml' >/dev/null; then
   fail "draft title is in the output"
 fi
+for sample in a-place-for-notes a-second-note an-open-picture; do
+  if find "$public" -iname "*${sample}*" | grep -q .; then
+    fail "sample post remains: $sample"
+  fi
+done
+if grep -R -n -E 'A place for notes|A second note|An open picture' "$public" --include='*.html' --include='*.xml' >/dev/null; then
+  fail "sample post title remains in the output"
+fi
 
-hero="$public/posts/a-place-for-notes/index.html"
-second="$public/posts/a-second-note/index.html"
-open_picture="$public/posts/an-open-picture/index.html"
+post="$public/posts/why-a-blog-why-now/index.html"
 about="$public/about/index.html"
 home="$public/index.html"
 search="$public/search/index.html"
 
-grep -q 'class="hero"' "$hero"
-grep -q 'class="hero-fade"' "$hero"
-grep -q 'class="hero-fade"' "$open_picture"
-if grep -q 'hero-blur' "$hero" || grep -q 'hero-blur' "$open_picture" || grep -q 'hero-blur' "$public/style.css"; then
-  fail "hero blur remains"
-fi
-if grep -q 'hero-shade' "$hero" || grep -q 'hero-shade' "$public/style.css"; then
-  fail "hero shade remains"
-fi
-grep -q 'data:image/webp;base64,' "$hero"
-grep -q 'data:image/webp;base64,' "$open_picture"
-if grep -q 'data:image/webp;base64,' "$second"; then
-  fail "text post inlined a hero preview"
-fi
-grep -q 'srcset=' "$hero"
-grep -q 'srcset="[^"]*\.webp 1200w, [^"]*\.webp 1800w"' "$hero"
-grep -q 'srcset="[^"]*\.webp 1200w, [^"]*\.webp 1800w"' "$open_picture"
-if grep -q '2400w' "$hero" || grep -q '2400w' "$open_picture"; then
-  fail "hero srcset still offers 2400w"
-fi
-grep -q 'property="og:image" content="[^"]*\.jpg"' "$hero"
-grep -q 'property="og:image" content="[^"]*\.jpg"' "$open_picture"
-grep -q 'rel="preload" as="image"' "$hero"
-grep -q 'rel="preload" as="image"' "$open_picture"
-grep -q 'imagesizes="100vw"' "$hero"
-grep -q 'fetchpriority="high"' "$hero"
-if grep -q 'rel="preload" as="image"' "$second"; then
-  fail "text post preloaded a hero"
-fi
-grep -q 'data-lang="rust"' "$hero"
-grep -q 'data-lang="kotlin"' "$hero"
-grep -q 'data-lang="go"' "$hero"
-grep -q 'data-lang="mermaid"' "$hero"
-grep -q 'class="footnotes"' "$hero"
-grep -q 'class="toc"' "$hero"
-grep -q 'class="series"' "$hero"
-grep -q 'a-second-note' "$hero"
-grep -q 'property="og:image"' "$hero"
-grep -q 'twitter:card' "$hero"
-grep -q 'application/ld+json' "$hero"
-grep -q '"@type": "Article"' "$hero" || grep -q '"@type":"Article"' "$hero"
-grep -q 'js/mermaid.js' "$hero"
-grep -q 'giallo.css' "$hero"
-grep -q 'name="color-scheme" content="dark"' "$hero"
-if grep -q 'theme-toggle\|giallo-light\|localStorage\|prefers-color-scheme' "$hero"; then
+grep -q 'Why a blog, why now' "$post"
+grep -q 'Writing clearly is the work, and a public place to practice.' "$post"
+grep -q 'https://github.com/Jarvvski/jjfx' "$post"
+grep -q 'October 24, 2026' "$post"
+grep -q 'tags/writing/' "$post"
+grep -q 'tags/agents/' "$post"
+grep -q 'property="og:image"' "$post"
+grep -q 'twitter:card' "$post"
+grep -q 'application/ld+json' "$post"
+grep -q '"@type": "Article"' "$post" || grep -q '"@type":"Article"' "$post"
+grep -q 'giallo.css' "$post"
+grep -q 'name="color-scheme" content="dark"' "$post"
+grep -q 'why-a-blog-why-now' "$public/atom.xml"
+grep -q 'why-a-blog-why-now' "$public/sitemap.xml"
+if grep -q 'theme-toggle\|giallo-light\|localStorage\|prefers-color-scheme' "$post"; then
   fail "light theme switch remains in the page"
 fi
 if grep -q 'prefers-color-scheme' "$public/style.css"; then
@@ -97,26 +70,50 @@ fi
 if grep -q 'setItem("theme"\|getItem("theme"' "$public/js/site.js"; then
   fail "site script still stores a theme"
 fi
-
-grep -q 'Updated' "$second"
-grep -q 'a-place-for-notes' "$second"
-grep -q 'og/a-second-note.png' "$second"
-if grep -q 'class="hero"' "$second"; then
-  fail "text post rendered a hero"
-fi
-grep -q 'class="hero"' "$open_picture"
-grep -q 'Generated image' "$open_picture"
-grep -q 'alt="A quiet writing desk by a window, morning light, an empty chair, paper and a cup"' "$open_picture"
-grep -q 'processed_images/hero.' "$open_picture"
-if grep -q 'og/an-open-picture.png' "$open_picture"; then
-  fail "open picture used a title card over its picture"
-fi
-grep -q 'An open picture' "$hero"
-if grep -q 'class="toc"' "$second"; then
+if grep -q 'class="toc"' "$post"; then
   fail "toc rendered without the flag"
 fi
-if grep -q 'mermaid.js' "$second"; then
+if grep -q 'class="series"' "$post"; then
+  fail "series rendered without the field"
+fi
+if grep -q 'mermaid.js' "$post"; then
   fail "mermaid loaded on a page without a diagram"
+fi
+if grep -q 'hero-blur' "$post" || grep -q 'hero-blur' "$public/style.css"; then
+  fail "hero blur remains"
+fi
+if grep -q 'hero-shade' "$post" || grep -q 'hero-shade' "$public/style.css"; then
+  fail "hero shade remains"
+fi
+
+# The hero file arrives from the heroes workflow. Until then the post is a text page
+# with a drawn share image. After hero.webp lands, the picture replaces that card.
+if grep -q 'class="hero"' "$post"; then
+  grep -q 'class="hero-fade"' "$post"
+  grep -q 'Generated image' "$post"
+  grep -q 'alt="A wide quiet desk in soft morning light, loose paper and a pen, a calm place for writing"' "$post"
+  grep -q 'data:image/webp;base64,' "$post"
+  grep -q 'srcset="[^"]*\.webp 1200w, [^"]*\.webp 1800w"' "$post"
+  if grep -q '2400w' "$post"; then
+    fail "hero srcset still offers 2400w"
+  fi
+  grep -q 'property="og:image" content="[^"]*\.jpg"' "$post"
+  grep -q 'rel="preload" as="image"' "$post"
+  grep -q 'imagesizes="100vw"' "$post"
+  grep -q 'fetchpriority="high"' "$post"
+  grep -q 'processed_images/hero.' "$post"
+  if grep -q 'og/why-a-blog-why-now.png' "$post"; then
+    fail "generated hero used a title card over its picture"
+  fi
+else
+  test -f "$public/og/why-a-blog-why-now.png"
+  grep -q 'og/why-a-blog-why-now.png' "$post"
+  if grep -q 'rel="preload" as="image"' "$post"; then
+    fail "text post preloaded a hero"
+  fi
+  if grep -q 'data:image/webp;base64,' "$post"; then
+    fail "text post inlined a hero preview"
+  fi
 fi
 
 grep -q 'github.com/Jarvvski' "$about"
@@ -124,6 +121,7 @@ grep -q 'x.com/__adamjarvis' "$about"
 grep -q '"@type": "Person"' "$about" || grep -q '"@type":"Person"' "$about"
 grep -q 'post-list' "$home"
 grep -q 'min read' "$home"
+grep -q 'why-a-blog-why-now' "$home"
 grep -q 'class="site-name"[^>]*>Adam</a>' "$home"
 grep -q '<h1>Adam</h1>' "$home"
 grep -q '<title>Adam Jarvis</title>' "$home"
