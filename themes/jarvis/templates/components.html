@@ -1,20 +1,9 @@
 {% component post_item(page) %}
 <li>
-  <p class="meta">
-    <time datetime="{{ page.date | date(format='%Y-%m-%d') }}">{{ page.date | date(format="%B %-d, %Y") }}</time>
-    <span aria-hidden="true">·</span>
-    <span>{{ page.reading_time }} min read</span>
-  </p>
+  {% include "partials/meta.html" %}
   <h2><a href="{{ page.permalink }}">{{ page.title }}</a></h2>
   {% if page?.description %}
     <p class="summary">{{ page.description }}</p>
-  {% endif %}
-  {% if page.taxonomies?.tags %}
-    <ul class="tags">
-      {% for tag in page.taxonomies.tags %}
-        <li><a href="{{ get_taxonomy_url(kind='tags', term=tag) }}">{{ tag }}</a></li>
-      {% endfor %}
-    </ul>
   {% endif %}
 </li>
 {% endcomponent post_item %}

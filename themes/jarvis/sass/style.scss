@@ -261,10 +261,22 @@ body:has(header.hero):not(.is-scrolled) .progress > span {
 }
 
 .meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.35rem 0.7rem;
   margin: 0 0 0.35rem;
   color: var(--muted);
   font-size: 0.85rem;
   line-height: 1.4;
+}
+
+.meta-line {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  column-gap: 0.35rem;
 }
 
 .tags,
@@ -280,8 +292,9 @@ body:has(header.hero):not(.is-scrolled) .progress > span {
 .tags {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   gap: 0.4rem;
-  margin-top: 0.7rem;
+  margin: 0;
 }
 
 .tags a,
