@@ -153,16 +153,18 @@ class HeroesTest(unittest.TestCase):
                 self.assertGreaterEqual(preview.size[0], 16)
                 self.assertLessEqual(preview.size[0], 32)
 
-    def test_sample_posts_cover_the_three_front_matter_states(self):
+    def test_published_post_waits_for_a_generated_hero(self):
         root = Path(__file__).resolve().parents[1]
         found = {}
         for path, data in gen_heroes.posts(root):
-            if data.get("draft") is True:
-                continue
-            found[path.parent.name] = gen_heroes.classify(data.get("extra") or {}, path.parent)
-        self.assertEqual(found["a-place-for-notes"], "manual")
-        self.assertEqual(found["a-second-note"], "none")
-        self.assertIn(found["an-open-picture"], {"pending", "generated"})
+            found[path.parent.name] = (
+                data.get("draft") is True,
+                gen_heroes.classify(data.get("extra") or {}, path.parent),
+            )
+        self.assertEqual(set(found), {"why-a-blog-why-now"})
+        draft, kind = found["why-a-blog-why-now"]
+        self.assertFalse(draft)
+        self.assertIn(kind, {"pending", "generated"})
 
 
 if __name__ == "__main__":
