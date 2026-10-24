@@ -123,6 +123,23 @@ class HeroesTest(unittest.TestCase):
             self.assertIn(b"\r\n720\r\n", calls[0])
             self.assertNotIn(b"\r\n1920\r\n", calls[0])
 
+    def test_workers_ai_500_is_retried(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            write_post(root / "content" / "posts" / "open", 'hero_prompt = "a closed notebook"\n')
+            calls = []
+
+            def fetch(url, body, headers):
+                calls.append(url)
+                if len(calls) == 1:
+                    return 500, "application/json", b'{"success":false}'
+                return 200, "application/json", jpeg_payload()
+
+            env = {"CLOUDFLARE_ACCOUNT_ID": "account", "CLOUDFLARE_AI_TOKEN": "token"}
+            self.assertEqual(gen_heroes.main(root, env, fetch, pause=lambda _seconds: None), 0)
+            self.assertEqual(len(calls), 2)
+            self.assertTrue((root / "content" / "posts" / "open" / "hero.webp").is_file())
+
     def test_missing_secret_skips(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)

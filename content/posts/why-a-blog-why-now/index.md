@@ -7,9 +7,9 @@ date = 2026-10-24
 tags = ["writing", "agents"]
 
 [extra]
-hero_alt = "A wide quiet desk in soft morning light, loose paper and a pen, a calm place for writing"
+hero_alt = "an open notebook beside a closed laptop on a dark wooden desk at blue hour, soft window light, cool charcoal palette, shallow depth of field, quiet cinematic still"
 hero_generated = true
-hero_prompt = "A wide quiet desk in soft morning light, loose paper and a pen, a calm place for writing"
+hero_prompt = "an open notebook beside a closed laptop on a dark wooden desk at blue hour, soft window light, cool charcoal palette, shallow depth of field, quiet cinematic still"
 +++
 
 I’ve always admired people who keep a blog — a place where thinking lives in public, not only in Slack threads or half-finished notes. I wanted that. I just never quite started.

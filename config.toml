@@ -24,8 +24,8 @@ lazy_async_image = false
 
 [markdown.highlighting]
 style = "class"
-theme = "Tokyo Night Moon"
-extra_themes = ["themes/jarvis/highlighting/tokyo-night-moon.json"]
+theme = "Tokyo Night Storm"
+extra_themes = ["themes/jarvis/highlighting/tokyo-night-storm.json"]
 error_on_missing_language = false
 add_color_scheme = false
 

@@ -50,6 +50,18 @@ grep -q 'https://github.com/Jarvvski/jjfx' "$post"
 grep -q 'October 24, 2026' "$post"
 grep -q 'tags/writing/' "$post"
 grep -q 'tags/agents/' "$post"
+# Date, reading time, and tag pills share one meta row, ahead of the title.
+if ! awk '
+  /class="meta"/ { grab = 1; buf = "" }
+  grab { buf = buf $0 "\n" }
+  grab && /<\/div>/ {
+    if (buf ~ /class="meta-line"/ && buf ~ /class="tags"/ && buf ~ /min read/ && buf ~ /tags\/writing\//) ok = 1
+    exit
+  }
+  END { exit !ok }
+' "$post"; then
+  fail "post tags are not on the meta row"
+fi
 grep -q 'property="og:image"' "$post"
 grep -q 'twitter:card' "$post"
 grep -q 'application/ld+json' "$post"
@@ -91,7 +103,7 @@ fi
 if grep -q 'class="hero"' "$post"; then
   grep -q 'class="hero-fade"' "$post"
   grep -q 'Generated image' "$post"
-  grep -q 'alt="A wide quiet desk in soft morning light, loose paper and a pen, a calm place for writing"' "$post"
+  grep -q 'alt="an open notebook beside a closed laptop on a dark wooden desk at blue hour, soft window light, cool charcoal palette, shallow depth of field, quiet cinematic still"' "$post"
   grep -q 'data:image/webp;base64,' "$post"
   grep -q 'srcset="[^"]*\.webp 1200w, [^"]*\.webp 1800w"' "$post"
   if grep -q '2400w' "$post"; then
@@ -122,6 +134,24 @@ grep -q '"@type": "Person"' "$about" || grep -q '"@type":"Person"' "$about"
 grep -q 'post-list' "$home"
 grep -q 'min read' "$home"
 grep -q 'why-a-blog-why-now' "$home"
+if ! awk '
+  /class="meta"/ { grab = 1; buf = "" }
+  grab { buf = buf $0 "\n" }
+  grab && /<\/div>/ {
+    if (buf ~ /class="meta-line"/ && buf ~ /class="tags"/ && buf ~ /min read/ && buf ~ /tags\/writing\//) ok = 1
+    exit
+  }
+  END { exit !ok }
+' "$home"; then
+  fail "home tags are not on the meta row"
+fi
+if awk '
+  /<p class="summary">/ { summary = 1 }
+  summary && /class="tags"/ { found = 1 }
+  END { exit !found }
+' "$home"; then
+  fail "home tags sit below the summary"
+fi
 grep -q 'class="site-name"[^>]*>Adam</a>' "$home"
 grep -q '<h1>Adam</h1>' "$home"
 grep -q '<title>Adam Jarvis</title>' "$home"
@@ -134,9 +164,9 @@ grep -q 'jarvis.gg' "$public/CNAME"
 grep -q 'Sitemap: https://jarvis.gg/sitemap.xml' "$public/robots.txt"
 grep -q 'prefers-reduced-motion' "$public/style.css"
 grep -q 'Source Serif 4' "$public/style.css"
-grep -qi '#222436' "$public/style.css"
-grep -qi '#82aaff' "$public/style.css"
-grep -qi '#c8d3f5' "$public/giallo.css"
+grep -qi '#191919' "$public/style.css"
+grep -qi '#7aa2f7' "$public/style.css"
+grep -qi '#c0caf5' "$public/giallo.css"
 if grep -q '#1c1d21' "$public/style.css"; then
   fail "old page grey remains"
 fi
