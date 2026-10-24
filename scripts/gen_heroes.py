@@ -3,6 +3,7 @@ import base64
 import io
 import json
 import os
+import time
 import tomllib
 import urllib.error
 import urllib.request
@@ -277,7 +278,19 @@ def default_fetch(url: str, body: bytes, headers: dict) -> tuple[int, str, bytes
         return error.code, content_type, error.read()
 
 
-def generate(root: Path, env: dict, fetch) -> int:
+def request_image(fetch, url: str, body: bytes, headers: dict, pause) -> tuple[int, str, bytes]:
+    status, content_type, payload = 0, "", b""
+    for attempt in range(3):
+        status, content_type, payload = fetch(url, body, headers)
+        if status < 500 or attempt == 2:
+            return status, content_type, payload
+        pause(2 * (attempt + 1))
+    return status, content_type, payload
+
+
+def generate(root: Path, env: dict, fetch, pause=None) -> int:
+    if pause is None:
+        pause = time.sleep
     account = env.get("CLOUDFLARE_ACCOUNT_ID", "").strip()
     token = env.get("CLOUDFLARE_AI_TOKEN", "").strip()
     if not account or not token:
@@ -303,7 +316,7 @@ def generate(root: Path, env: dict, fetch) -> int:
             continue
         prompt = prompt_for(title, description, hero_prompt)
         url, body, headers = api_request(account, token, model, prompt, width, height)
-        status, content_type, payload = fetch(url, body, headers)
+        status, content_type, payload = request_image(fetch, url, body, headers, pause)
         if status >= 400:
             detail = payload[:300].decode(errors="replace").replace("\n", " ")
             raise HeroError(f"Workers AI returned {status} for {path.parent.name}: {detail}")
@@ -317,13 +330,14 @@ def generate(root: Path, env: dict, fetch) -> int:
     return 0
 
 
-def main(root: Path | None = None, env: dict | None = None, fetch=None) -> int:
+def main(root: Path | None = None, env: dict | None = None, fetch=None, pause=None) -> int:
     try:
         site = root or Path(__file__).resolve().parents[1]
         code = generate(
             site,
             env if env is not None else dict(os.environ),
             fetch or default_fetch,
+            pause,
         )
         write_placeholders(site)
         return code
