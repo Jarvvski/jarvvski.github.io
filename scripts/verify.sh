@@ -91,7 +91,7 @@ fi
 if grep -q 'class="hero"' "$post"; then
   grep -q 'class="hero-fade"' "$post"
   grep -q 'Generated image' "$post"
-  grep -q 'alt="A wide quiet desk in soft morning light, loose paper and a pen, a calm place for writing"' "$post"
+  grep -q 'alt="an open notebook beside a closed laptop on a dark wooden desk at blue hour, soft window light, cool charcoal palette, shallow depth of field, quiet cinematic still"' "$post"
   grep -q 'data:image/webp;base64,' "$post"
   grep -q 'srcset="[^"]*\.webp 1200w, [^"]*\.webp 1800w"' "$post"
   if grep -q '2400w' "$post"; then
@@ -134,9 +134,9 @@ grep -q 'jarvis.gg' "$public/CNAME"
 grep -q 'Sitemap: https://jarvis.gg/sitemap.xml' "$public/robots.txt"
 grep -q 'prefers-reduced-motion' "$public/style.css"
 grep -q 'Source Serif 4' "$public/style.css"
-grep -qi '#222436' "$public/style.css"
-grep -qi '#82aaff' "$public/style.css"
-grep -qi '#c8d3f5' "$public/giallo.css"
+grep -qi '#191919' "$public/style.css"
+grep -qi '#7aa2f7' "$public/style.css"
+grep -qi '#c0caf5' "$public/giallo.css"
 if grep -q '#1c1d21' "$public/style.css"; then
   fail "old page grey remains"
 fi
